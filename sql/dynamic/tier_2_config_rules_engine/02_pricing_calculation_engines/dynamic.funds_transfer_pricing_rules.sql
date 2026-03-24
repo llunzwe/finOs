@@ -77,15 +77,21 @@ CREATE TABLE dynamic.funds_transfer_pricing_rules (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.funds_transfer_pricing_rules_default PARTITION OF dynamic.funds_transfer_pricing_rules DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_ftp_rules_product
+CREATE INDEX idx_ftp_rules_product ON dynamic.funds_transfer_pricing_rules(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

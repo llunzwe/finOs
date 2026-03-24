@@ -66,6 +66,11 @@ CREATE TABLE dynamic.product_bundle_header (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_bundle_code_per_tenant UNIQUE (tenant_id, bundle_code)
 ) PARTITION BY LIST (tenant_id);
@@ -73,10 +78,11 @@ CREATE TABLE dynamic.product_bundle_header (
 CREATE TABLE dynamic.product_bundle_header_default PARTITION OF dynamic.product_bundle_header DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_bundle_header_tenant
-idx_bundle_header_lookup
+CREATE INDEX idx_bundle_header_tenant ON dynamic.product_bundle_header(tenant_id);
+CREATE INDEX idx_bundle_header_lookup ON dynamic.product_bundle_header(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

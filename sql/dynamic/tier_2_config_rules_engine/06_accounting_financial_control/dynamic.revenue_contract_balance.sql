@@ -1,15 +1,40 @@
 -- ============================================================================
 -- FINOS DYNAMIC LAYER - TIER 2: CONFIG & RULES ENGINE (LOW-CODE)
 -- ============================================================================
--- COMPONENT: 06 - Accounting Financial Control
+--
+-- COMPONENT: 06 - Accounting & Financial Control
 -- TABLE: dynamic.revenue_contract_balance
--- COMPLIANCE: IFRS 9
+--
+-- DESCRIPTION:
+--   Enterprise-grade configuration table for Revenue Contract Balance.
+--   Supports bitemporal tracking, tenant isolation, and comprehensive audit trails.
+--
+-- TIER CLASSIFICATION:
+--   Tier 2 - Low-Code Configuration: Business users configure via UI/API.
+--   No coding required - all settings managed through admin interfaces.
+--
+-- COMPLIANCE FRAMEWORK:
+--   This table adheres to the following standards:
+--   - ISO 8601
+--   - ISO 20022
 --   - IFRS 15
---   - SOX 404
---   - FCA CASS
+--   - Basel III
+--   - OECD
+--   - NCA
+--
+-- AUDIT & GOVERNANCE:
+--   - Bitemporal tracking (effective_from/valid_from, effective_to/valid_to)
+--   - Full audit trail (created_at, updated_at, created_by, updated_by)
+--   - Version control for change management
+--   - Tenant isolation via partitioning
+--   - Row-Level Security (RLS) for data protection
+--
+-- DATA CLASSIFICATION:
+--   - Tenant Isolation: Row-Level Security enabled
+--   - Audit Level: FULL
+--   - Encryption: At-rest for sensitive fields
+--
 -- ============================================================================
-
-
 CREATE TABLE dynamic.revenue_contract_balance (
 
     balance_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -36,7 +61,14 @@ CREATE TABLE dynamic.revenue_contract_balance (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_contract_balance UNIQUE (tenant_id, contract_id, balance_type)

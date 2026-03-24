@@ -70,6 +70,11 @@ CREATE TABLE dynamic.state_machine_definition (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     
     CONSTRAINT unique_machine_code_version UNIQUE (tenant_id, machine_code, version)
 ) PARTITION BY LIST (tenant_id);
@@ -77,11 +82,11 @@ CREATE TABLE dynamic.state_machine_definition (
 CREATE TABLE dynamic.state_machine_definition_default PARTITION OF dynamic.state_machine_definition DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_state_machine_tenant
-idx_state_machine_lookup
-idx_state_machine_entity
+CREATE INDEX idx_state_machine_tenant ON dynamic.state_machine_definition(tenant_id);
+CREATE INDEX idx_state_machine_lookup ON dynamic.state_machine_definition(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

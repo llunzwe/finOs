@@ -73,6 +73,11 @@ CREATE TABLE dynamic.tax_rate_schedule (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT chk_tax_rate_valid_dates CHECK (effective_from < effective_to)
 ) PARTITION BY LIST (tenant_id);
@@ -80,11 +85,11 @@ CREATE TABLE dynamic.tax_rate_schedule (
 CREATE TABLE dynamic.tax_rate_schedule_default PARTITION OF dynamic.tax_rate_schedule DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_tax_rate_jurisdiction
-idx_tax_rate_type
-idx_tax_rate_effective
+CREATE INDEX idx_tax_rate_jurisdiction ON dynamic.tax_rate_schedule(tenant_id);
+CREATE INDEX idx_tax_rate_type ON dynamic.tax_rate_schedule(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

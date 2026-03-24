@@ -75,16 +75,22 @@ CREATE TABLE dynamic.approval_matrix_advanced (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.approval_matrix_advanced_default PARTITION OF dynamic.approval_matrix_advanced DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_approval_matrix_tenant
-idx_approval_matrix_product
+CREATE INDEX idx_approval_matrix_tenant ON dynamic.approval_matrix_advanced(tenant_id);
+CREATE INDEX idx_approval_matrix_product ON dynamic.approval_matrix_advanced(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

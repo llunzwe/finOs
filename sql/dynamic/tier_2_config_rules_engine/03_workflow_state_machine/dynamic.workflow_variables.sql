@@ -68,6 +68,8 @@ CREATE TABLE dynamic.workflow_variables (
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     created_by VARCHAR(100),
     updated_by VARCHAR(100),
     
@@ -77,10 +79,11 @@ CREATE TABLE dynamic.workflow_variables (
 CREATE TABLE dynamic.workflow_variables_default PARTITION OF dynamic.workflow_variables DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_workflow_variables_instance
-idx_workflow_variables_name
+CREATE INDEX idx_workflow_variables_instance ON dynamic.workflow_variables(tenant_id);
+CREATE INDEX idx_workflow_variables_name ON dynamic.workflow_variables(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

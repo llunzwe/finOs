@@ -74,7 +74,14 @@ CREATE TABLE dynamic.workflow_instance (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     correlation_id UUID,
     
     CONSTRAINT unique_entity_workflow UNIQUE (tenant_id, context_entity_type, context_entity_id, status)
@@ -83,14 +90,11 @@ CREATE TABLE dynamic.workflow_instance (
 CREATE TABLE dynamic.workflow_instance_default PARTITION OF dynamic.workflow_instance DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_workflow_machine
-idx_workflow_entity
-idx_workflow_state
-idx_workflow_status
-idx_workflow_sla
-idx_workflow_priority
+CREATE INDEX idx_workflow_machine ON dynamic.workflow_instance(tenant_id);
+CREATE INDEX idx_workflow_entity ON dynamic.workflow_instance(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

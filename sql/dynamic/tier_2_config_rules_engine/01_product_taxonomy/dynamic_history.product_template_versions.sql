@@ -67,7 +67,9 @@ CREATE TABLE dynamic_history.product_template_versions (
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
-    
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_product_version UNIQUE (tenant_id, product_id, version_sequence),
     CONSTRAINT chk_version_valid_time CHECK (valid_time_start < valid_time_end)
 ) PARTITION BY LIST (tenant_id);
@@ -75,10 +77,11 @@ CREATE TABLE dynamic_history.product_template_versions (
 CREATE TABLE dynamic_history.product_template_versions_default PARTITION OF dynamic_history.product_template_versions DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_template_versions_product
-idx_template_versions_temporal
+CREATE INDEX idx_template_versions_product ON dynamic_history.product_template_versions(tenant_id);
+CREATE INDEX idx_template_versions_temporal ON dynamic_history.product_template_versions(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

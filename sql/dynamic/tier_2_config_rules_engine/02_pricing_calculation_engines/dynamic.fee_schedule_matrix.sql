@@ -76,17 +76,22 @@ CREATE TABLE dynamic.fee_schedule_matrix (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.fee_schedule_matrix_default PARTITION OF dynamic.fee_schedule_matrix DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_fee_schedule_product
-idx_fee_schedule_type
-idx_fee_schedule_effective
+CREATE INDEX idx_fee_schedule_product ON dynamic.fee_schedule_matrix(tenant_id);
+CREATE INDEX idx_fee_schedule_type ON dynamic.fee_schedule_matrix(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

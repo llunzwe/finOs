@@ -76,6 +76,11 @@ CREATE TABLE dynamic.floating_rate_index (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_index_code_per_tenant UNIQUE (tenant_id, index_code)
 ) PARTITION BY LIST (tenant_id);
@@ -83,10 +88,11 @@ CREATE TABLE dynamic.floating_rate_index (
 CREATE TABLE dynamic.floating_rate_index_default PARTITION OF dynamic.floating_rate_index DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_floating_index_tenant
-idx_floating_index_lookup
+CREATE INDEX idx_floating_index_tenant ON dynamic.floating_rate_index(tenant_id);
+CREATE INDEX idx_floating_index_lookup ON dynamic.floating_rate_index(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

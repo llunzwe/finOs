@@ -82,6 +82,11 @@ CREATE TABLE dynamic.product_insurance_specifics (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 

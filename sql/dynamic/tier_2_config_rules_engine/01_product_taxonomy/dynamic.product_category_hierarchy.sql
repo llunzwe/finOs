@@ -46,18 +46,21 @@ CREATE TABLE dynamic.product_category_hierarchy (
     is_leaf_node BOOLEAN GENERATED ALWAYS AS (path_length = 0) STORED,
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    
+    created_by VARCHAR(100),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_hierarchy_path UNIQUE (tenant_id, ancestor_id, descendant_id)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.product_category_hierarchy_default PARTITION OF dynamic.product_category_hierarchy DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_category_hierarchy_ancestor
-idx_category_hierarchy_descendant
-idx_category_hierarchy_leaf
+CREATE INDEX idx_category_hierarchy_ancestor ON dynamic.product_category_hierarchy(tenant_id);
+CREATE INDEX idx_category_hierarchy_descendant ON dynamic.product_category_hierarchy(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

@@ -72,6 +72,11 @@ CREATE TABLE dynamic.state_transition_rules (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_machine_transition UNIQUE (tenant_id, machine_id, from_state, to_state)
 ) PARTITION BY LIST (tenant_id);
@@ -79,10 +84,11 @@ CREATE TABLE dynamic.state_transition_rules (
 CREATE TABLE dynamic.state_transition_rules_default PARTITION OF dynamic.state_transition_rules DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_transition_rules_machine
-idx_transition_rules_from
+CREATE INDEX idx_transition_rules_machine ON dynamic.state_transition_rules(tenant_id);
+CREATE INDEX idx_transition_rules_from ON dynamic.state_transition_rules(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

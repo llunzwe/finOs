@@ -66,6 +66,11 @@ CREATE TABLE dynamic.product_parameter_values (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_param_value_per_product UNIQUE (tenant_id, product_id, parameter_id, effective_date)
 ) PARTITION BY LIST (tenant_id);
@@ -73,11 +78,11 @@ CREATE TABLE dynamic.product_parameter_values (
 CREATE TABLE dynamic.product_parameter_values_default PARTITION OF dynamic.product_parameter_values DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_param_values_product
-idx_param_values_param
-idx_param_values_effective
+CREATE INDEX idx_param_values_product ON dynamic.product_parameter_values(tenant_id);
+CREATE INDEX idx_param_values_param ON dynamic.product_parameter_values(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

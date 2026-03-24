@@ -75,6 +75,10 @@ CREATE TABLE dynamic.task_instance (
     
     -- Audit
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     created_by VARCHAR(100),
     completed_by VARCHAR(100),
     correlation_id UUID
@@ -83,13 +87,11 @@ CREATE TABLE dynamic.task_instance (
 CREATE TABLE dynamic.task_instance_default PARTITION OF dynamic.task_instance DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_task_instance_assignee
-idx_task_instance_queue
-idx_task_instance_due
-idx_task_instance_workflow
-idx_task_instance_status
+CREATE INDEX idx_task_instance_assignee ON dynamic.task_instance(tenant_id);
+CREATE INDEX idx_task_instance_queue ON dynamic.task_instance(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

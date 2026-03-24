@@ -79,6 +79,11 @@ CREATE TABLE dynamic.tax_reporting_forms (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_form_code_version UNIQUE (tenant_id, form_code, schema_version)
 ) PARTITION BY LIST (tenant_id);
@@ -86,10 +91,11 @@ CREATE TABLE dynamic.tax_reporting_forms (
 CREATE TABLE dynamic.tax_reporting_forms_default PARTITION OF dynamic.tax_reporting_forms DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_tax_forms_jurisdiction
-idx_tax_forms_authority
+CREATE INDEX idx_tax_forms_jurisdiction ON dynamic.tax_reporting_forms(tenant_id);
+CREATE INDEX idx_tax_forms_authority ON dynamic.tax_reporting_forms(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

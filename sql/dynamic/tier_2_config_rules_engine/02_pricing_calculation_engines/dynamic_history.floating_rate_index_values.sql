@@ -57,17 +57,21 @@ CREATE TABLE dynamic_history.floating_rate_index_values (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    
+    created_by VARCHAR(100),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_index_fixing_date UNIQUE (tenant_id, index_id, fixing_date)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.floating_rate_index_values_default PARTITION OF dynamic_history.floating_rate_index_values DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_index_values_index
-idx_index_values_date
+CREATE INDEX idx_index_values_index ON dynamic_history.floating_rate_index_values(tenant_id);
+CREATE INDEX idx_index_values_date ON dynamic_history.floating_rate_index_values(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

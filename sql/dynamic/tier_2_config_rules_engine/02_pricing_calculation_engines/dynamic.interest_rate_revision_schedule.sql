@@ -72,16 +72,21 @@ CREATE TABLE dynamic.interest_rate_revision_schedule (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    version BIGINT NOT NULL DEFAULT 1,
     updated_by VARCHAR(100)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.interest_rate_revision_schedule_default PARTITION OF dynamic.interest_rate_revision_schedule DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_rate_revision_product
-idx_rate_revision_effective
+CREATE INDEX idx_rate_revision_product ON dynamic.interest_rate_revision_schedule(tenant_id);
+CREATE INDEX idx_rate_revision_effective ON dynamic.interest_rate_revision_schedule(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

@@ -7,6 +7,7 @@
 --
 -- DESCRIPTION:
 --   Enterprise-grade configuration table for Task Delegation.
+--   Temporary task reassignments during user absence.
 --   Supports bitemporal tracking, tenant isolation, and comprehensive audit trails.
 --
 -- TIER CLASSIFICATION:
@@ -55,14 +56,18 @@ CREATE TABLE dynamic.task_delegation (
     
     -- Status
     active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     cancelled_at TIMESTAMPTZ,
     cancelled_by UUID,
     
     -- Reason
     delegation_reason TEXT,
     
-    created_by UUID NOT NULL
+    -- Audit
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.task_delegation_default PARTITION OF dynamic.task_delegation DEFAULT;
@@ -70,14 +75,13 @@ CREATE TABLE dynamic.task_delegation_default PARTITION OF dynamic.task_delegatio
 -- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_delegation_from
-idx_delegation_to
-idx_delegation_dates
+CREATE INDEX idx_delegation_from ON dynamic.task_delegation(tenant_id, from_user_id);
+CREATE INDEX idx_delegation_to ON dynamic.task_delegation(tenant_id, to_user_id);
 
 -- ============================================================================
 -- COMMENTS
 -- ============================================================================
-COMMENT ON TABLE dynamic.task_delegation IS 'Temporary task reassignments during absence';
+COMMENT ON TABLE dynamic.task_delegation IS 'Temporary task reassignments during absence. Tier 2 - Workflow & State Machine.';
 
 -- ============================================================================
 -- SECURITY - GRANTS

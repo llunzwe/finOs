@@ -2,9 +2,13 @@
 -- FINOS DYNAMIC LAYER - TIER 3: SCRIPTED EXTENSIONS (SMART CONTRACTS)
 -- ============================================================================
 -- TABLE: dynamic_history.business_rule_execution_log
--- DESCRIPTION: Business Rule Execution Log
+-- DESCRIPTION:
+--   Enterprise-grade execution log for Business Rules.
 -- COMPLIANCE: ISO 27001 (Sandboxing), SOX (Audit), GDPR (Data Protection)
--- TIER: 3 - Developer-Only (JavaScript, Lua, WASM scripts)
+
+-- TIER CLASSIFICATION:
+--   Tier 3 - Pro-Code Extensions: Developer-only JavaScript, Lua, WASM scripts.
+--   Requires coding expertise - managed through developer interfaces.
 -- ============================================================================
 
 CREATE TABLE dynamic_history.business_rule_execution_log (
@@ -35,7 +39,10 @@ CREATE TABLE dynamic_history.business_rule_execution_log (
     error_message TEXT,
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-
+    created_by VARCHAR(100),
+updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+updated_by VARCHAR(100),
+version BIGINT NOT NULL DEFAULT 1,
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.business_rule_execution_log_default PARTITION OF dynamic_history.business_rule_execution_log DEFAULT;

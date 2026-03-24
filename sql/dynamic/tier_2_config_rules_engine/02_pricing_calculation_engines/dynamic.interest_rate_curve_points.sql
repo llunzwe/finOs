@@ -66,6 +66,10 @@ CREATE TABLE dynamic.interest_rate_curve_points (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     
     CONSTRAINT unique_curve_tenor UNIQUE (tenant_id, curve_id, tenor_days, quote_date)
 ) PARTITION BY LIST (tenant_id);
@@ -73,11 +77,11 @@ CREATE TABLE dynamic.interest_rate_curve_points (
 CREATE TABLE dynamic.interest_rate_curve_points_default PARTITION OF dynamic.interest_rate_curve_points DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_curve_points_curve
-idx_curve_points_date
-idx_curve_points_tenor
+CREATE INDEX idx_curve_points_curve ON dynamic.interest_rate_curve_points(tenant_id);
+CREATE INDEX idx_curve_points_date ON dynamic.interest_rate_curve_points(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

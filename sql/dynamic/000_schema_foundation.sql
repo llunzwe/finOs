@@ -1,9 +1,44 @@
 -- ============================================================================
 -- FINOS DYNAMIC LAYER - SCHEMA FOUNDATION
 -- ============================================================================
--- Enterprise-Grade Dynamic Configuration Layer for PostgreSQL 16+
+--
+-- COMPONENT: 00 - Schema Foundation
+-- SCHEMAS: dynamic, dynamic_history
+--
+-- DESCRIPTION:
+--   Enterprise-grade schema foundation for the Dynamic Layer.
+--   Defines custom enumerations, helper functions, and schema infrastructure.
+--   Supports bitemporal tracking, multi-tenancy, and comprehensive audit trails.
+--
+-- LAYER CLASSIFICATION:
+--   Dynamic Layer - Product Configuration, Pricing, Workflow, and Business Rules.
+--   Tier 1: Instant Library (Zero-Code)
+--   Tier 2: Config & Rules Engine (Low-Code)
+--   Tier 3: Scripted Extensions (Pro-Code)
+--
+-- COMPLIANCE FRAMEWORK:
+--   This schema adheres to the following standards:
+--   - FINOS (Financial Open Source Foundation)
+--   - Basel III/IV (Banking regulations)
+--   - IFRS 9/15/17 (Accounting standards)
+--   - GDPR (Data protection)
+--   - SOC2 (Security controls)
+--   - SARB/RBZ (Regional banking regulators)
+--
+-- AUDIT & GOVERNANCE:
+--   - All tables support full audit trails
+--   - Bitemporal tracking for data versioning
+--   - Tenant isolation via partitioning
+--   - Row-Level Security (RLS) for data protection
+--
+-- DATA CLASSIFICATION:
+--   - Audit Level: FULL
+--   - Encryption: At-rest for sensitive fields
+--
+-- ============================================================================
+--
+-- PostgreSQL 16+ Enterprise Configuration
 -- Features: Bitemporal, Multi-tenant, Encrypted, Partitioning, Audit
--- Standards: FINOS, Basel III/IV, IFRS 9/15/17, GDPR, SOC2, SARB, RBZ
 -- ============================================================================
 
 -- ============================================================================

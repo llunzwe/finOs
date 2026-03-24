@@ -80,15 +80,21 @@ CREATE TABLE dynamic.withholding_tax_rules (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.withholding_tax_rules_default PARTITION OF dynamic.withholding_tax_rules DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_withholding_rules_product
+CREATE INDEX idx_withholding_rules_product ON dynamic.withholding_tax_rules(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

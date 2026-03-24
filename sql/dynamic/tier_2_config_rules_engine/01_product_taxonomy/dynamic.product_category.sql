@@ -79,6 +79,11 @@ CREATE TABLE dynamic.product_category (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     -- Constraints
     CONSTRAINT unique_category_code_per_tenant UNIQUE (tenant_id, category_code),
@@ -89,17 +94,11 @@ CREATE TABLE dynamic.product_category (
 CREATE TABLE dynamic.product_category_default PARTITION OF dynamic.product_category DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_product_category_tenant
-idx_product_category_lookup
-idx_product_category_hierarchy
-idx_product_category_parent
-idx_product_category_temporal
-idx_product_category_attributes
-idx_category_hierarchy_ancestor
-idx_category_hierarchy_descendant
-idx_category_hierarchy_leaf
+CREATE INDEX idx_product_category_tenant ON dynamic.product_category(tenant_id);
+CREATE INDEX idx_product_category_lookup ON dynamic.product_category(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

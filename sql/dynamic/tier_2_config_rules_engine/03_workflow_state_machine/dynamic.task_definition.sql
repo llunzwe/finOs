@@ -76,6 +76,11 @@ CREATE TABLE dynamic.task_definition (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_task_code_per_tenant UNIQUE (tenant_id, task_code)
 ) PARTITION BY LIST (tenant_id);
@@ -83,10 +88,11 @@ CREATE TABLE dynamic.task_definition (
 CREATE TABLE dynamic.task_definition_default PARTITION OF dynamic.task_definition DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_task_def_tenant
-idx_task_def_lookup
+CREATE INDEX idx_task_def_tenant ON dynamic.task_definition(tenant_id);
+CREATE INDEX idx_task_def_lookup ON dynamic.task_definition(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

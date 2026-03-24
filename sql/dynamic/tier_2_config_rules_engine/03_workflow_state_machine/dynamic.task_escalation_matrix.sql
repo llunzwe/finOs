@@ -60,16 +60,19 @@ CREATE TABLE dynamic.task_escalation_matrix (
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
-    
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_task_escalation_level UNIQUE (tenant_id, task_def_id, current_level)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.task_escalation_matrix_default PARTITION OF dynamic.task_escalation_matrix DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_escalation_matrix_task
+CREATE INDEX idx_escalation_matrix_task ON dynamic.task_escalation_matrix(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

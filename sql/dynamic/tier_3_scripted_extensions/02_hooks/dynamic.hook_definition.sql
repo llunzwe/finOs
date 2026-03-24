@@ -2,9 +2,13 @@
 -- FINOS DYNAMIC LAYER - TIER 3: SCRIPTED EXTENSIONS (SMART CONTRACTS)
 -- ============================================================================
 -- TABLE: dynamic.hook_definition
--- DESCRIPTION: Hook Definition - Sandboxed scripts
+-- DESCRIPTION:
+--   Enterprise-grade configuration table for Hook Definitions. - Sandboxed scripts
 -- COMPLIANCE: ISO 27001 (Sandboxing), SOX (Audit), GDPR (Data Protection)
--- TIER: 3 - Developer-Only (JavaScript, Lua, WASM scripts)
+
+-- TIER CLASSIFICATION:
+--   Tier 3 - Pro-Code Extensions: Developer-only JavaScript, Lua, WASM scripts.
+--   Requires coding expertise - managed through developer interfaces.
 -- ============================================================================
 
 CREATE TABLE dynamic.hook_definition (
@@ -53,6 +57,11 @@ CREATE TABLE dynamic.hook_definition (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
     

@@ -84,15 +84,21 @@ CREATE TABLE dynamic.product_eligibility_rules (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.product_eligibility_rules_default PARTITION OF dynamic.product_eligibility_rules DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_eligibility_rules_product
+CREATE INDEX idx_eligibility_rules_product ON dynamic.product_eligibility_rules(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

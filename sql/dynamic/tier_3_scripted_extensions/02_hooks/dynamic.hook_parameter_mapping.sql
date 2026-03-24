@@ -2,9 +2,13 @@
 -- FINOS DYNAMIC LAYER - TIER 3: SCRIPTED EXTENSIONS (SMART CONTRACTS)
 -- ============================================================================
 -- TABLE: dynamic.hook_parameter_mapping
--- DESCRIPTION: Hook Parameter Mapping
+-- DESCRIPTION:
+--   Enterprise-grade configuration table for Hook Parameter Mapping.
 -- COMPLIANCE: ISO 27001 (Sandboxing), SOX (Audit), GDPR (Data Protection)
--- TIER: 3 - Developer-Only (JavaScript, Lua, WASM scripts)
+
+-- TIER CLASSIFICATION:
+--   Tier 3 - Pro-Code Extensions: Developer-only JavaScript, Lua, WASM scripts.
+--   Requires coding expertise - managed through developer interfaces.
 -- ============================================================================
 
 CREATE TABLE dynamic.hook_parameter_mapping (
@@ -32,7 +36,9 @@ CREATE TABLE dynamic.hook_parameter_mapping (
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
-    
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_hook_parameter UNIQUE (tenant_id, hook_id, parameter_name, parameter_direction)
 
 ) PARTITION BY LIST (tenant_id);

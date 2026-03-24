@@ -73,6 +73,11 @@ CREATE TABLE dynamic.product_parameter_definition (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_parameter_code_per_tenant UNIQUE (tenant_id, parameter_code)
 ) PARTITION BY LIST (tenant_id);
@@ -80,11 +85,11 @@ CREATE TABLE dynamic.product_parameter_definition (
 CREATE TABLE dynamic.product_parameter_definition_default PARTITION OF dynamic.product_parameter_definition DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_parameter_def_tenant
-idx_parameter_def_lookup
-idx_parameter_def_products
+CREATE INDEX idx_parameter_def_tenant ON dynamic.product_parameter_definition(tenant_id);
+CREATE INDEX idx_parameter_def_lookup ON dynamic.product_parameter_definition(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

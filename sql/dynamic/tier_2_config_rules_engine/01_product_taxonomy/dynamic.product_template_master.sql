@@ -91,6 +91,11 @@ CREATE TABLE dynamic.product_template_master (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     -- Constraints
     CONSTRAINT unique_product_code_per_tenant UNIQUE (tenant_id, product_code),
@@ -101,15 +106,11 @@ CREATE TABLE dynamic.product_template_master (
 CREATE TABLE dynamic.product_template_master_default PARTITION OF dynamic.product_template_master DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_product_template_tenant
-idx_product_template_lookup
-idx_product_template_category
-idx_product_template_status
-idx_product_template_temporal
-idx_product_template_features
-idx_product_template_attributes
+CREATE INDEX idx_product_template_tenant ON dynamic.product_template_master(tenant_id);
+CREATE INDEX idx_product_template_lookup ON dynamic.product_template_master(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

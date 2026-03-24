@@ -56,17 +56,20 @@ CREATE TABLE dynamic.state_transition_permissions (
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
-    
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_transition_role UNIQUE (tenant_id, transition_id, role_code)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.state_transition_permissions_default PARTITION OF dynamic.state_transition_permissions DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_transition_permissions_transition
-idx_transition_permissions_role
+CREATE INDEX idx_transition_permissions_transition ON dynamic.state_transition_permissions(tenant_id);
+CREATE INDEX idx_transition_permissions_role ON dynamic.state_transition_permissions(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

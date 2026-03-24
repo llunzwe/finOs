@@ -57,15 +57,21 @@ CREATE TABLE dynamic_history.approval_history (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+
     ip_address INET
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.approval_history_default PARTITION OF dynamic_history.approval_history DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_approval_history_approval
+CREATE INDEX idx_approval_history_approval ON dynamic_history.approval_history(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

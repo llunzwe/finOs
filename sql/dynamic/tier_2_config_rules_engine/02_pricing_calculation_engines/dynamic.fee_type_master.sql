@@ -80,6 +80,11 @@ CREATE TABLE dynamic.fee_type_master (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_fee_type_code_per_tenant UNIQUE (tenant_id, fee_type_code)
 ) PARTITION BY LIST (tenant_id);
@@ -87,11 +92,11 @@ CREATE TABLE dynamic.fee_type_master (
 CREATE TABLE dynamic.fee_type_master_default PARTITION OF dynamic.fee_type_master DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_fee_type_tenant
-idx_fee_type_lookup
-idx_fee_type_category
+CREATE INDEX idx_fee_type_tenant ON dynamic.fee_type_master(tenant_id);
+CREATE INDEX idx_fee_type_lookup ON dynamic.fee_type_master(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

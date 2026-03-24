@@ -80,19 +80,26 @@ CREATE TABLE dynamic.approval_instance (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     correlation_id UUID
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.approval_instance_default PARTITION OF dynamic.approval_instance DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_approval_instance_approver
-idx_approval_instance_requester
-idx_approval_instance_status
-idx_approval_instance_subject
+CREATE INDEX idx_approval_instance_approver ON dynamic.approval_instance(tenant_id);
+CREATE INDEX idx_approval_instance_requester ON dynamic.approval_instance(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

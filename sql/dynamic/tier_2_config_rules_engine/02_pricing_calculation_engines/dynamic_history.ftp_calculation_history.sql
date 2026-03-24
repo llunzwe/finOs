@@ -63,15 +63,19 @@ CREATE TABLE dynamic_history.ftp_calculation_history (
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100)
+updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+updated_by VARCHAR(100),
+version BIGINT NOT NULL DEFAULT 1,
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.ftp_calculation_history_default PARTITION OF dynamic_history.ftp_calculation_history DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_ftp_history_container
-idx_ftp_history_date
+CREATE INDEX idx_ftp_history_container ON dynamic_history.ftp_calculation_history(tenant_id);
+CREATE INDEX idx_ftp_history_date ON dynamic_history.ftp_calculation_history(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

@@ -74,6 +74,11 @@ CREATE TABLE dynamic.transfer_pricing_curve (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_tp_curve_code UNIQUE (tenant_id, curve_code)
 ) PARTITION BY LIST (tenant_id);
@@ -81,10 +86,11 @@ CREATE TABLE dynamic.transfer_pricing_curve (
 CREATE TABLE dynamic.transfer_pricing_curve_default PARTITION OF dynamic.transfer_pricing_curve DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_tp_curve_tenant
-idx_tp_curve_currency
+CREATE INDEX idx_tp_curve_tenant ON dynamic.transfer_pricing_curve(tenant_id);
+CREATE INDEX idx_tp_curve_currency ON dynamic.transfer_pricing_curve(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

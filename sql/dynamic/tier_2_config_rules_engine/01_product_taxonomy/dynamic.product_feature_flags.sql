@@ -67,6 +67,11 @@ CREATE TABLE dynamic.product_feature_flags (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_feature_code_per_tenant UNIQUE (tenant_id, feature_code)
 ) PARTITION BY LIST (tenant_id);
@@ -74,11 +79,11 @@ CREATE TABLE dynamic.product_feature_flags (
 CREATE TABLE dynamic.product_feature_flags_default PARTITION OF dynamic.product_feature_flags DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_feature_flags_tenant
-idx_feature_flags_lookup
-idx_feature_flags_categories
+CREATE INDEX idx_feature_flags_tenant ON dynamic.product_feature_flags(tenant_id);
+CREATE INDEX idx_feature_flags_lookup ON dynamic.product_feature_flags(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

@@ -76,16 +76,22 @@ CREATE TABLE dynamic.fee_waiver_policies (
     created_by VARCHAR(100),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic.fee_waiver_policies_default PARTITION OF dynamic.fee_waiver_policies DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_waiver_policies_fee_type
-idx_waiver_policies_product
+CREATE INDEX idx_waiver_policies_fee_type ON dynamic.fee_waiver_policies(tenant_id);
+CREATE INDEX idx_waiver_policies_product ON dynamic.fee_waiver_policies(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

@@ -75,6 +75,11 @@ CREATE TABLE dynamic.tax_jurisdiction_master (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_jurisdiction_code_per_tenant UNIQUE (tenant_id, jurisdiction_code)
 ) PARTITION BY LIST (tenant_id);
@@ -82,10 +87,11 @@ CREATE TABLE dynamic.tax_jurisdiction_master (
 CREATE TABLE dynamic.tax_jurisdiction_master_default PARTITION OF dynamic.tax_jurisdiction_master DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_tax_jurisdiction_tenant
-idx_tax_jurisdiction_country
+CREATE INDEX idx_tax_jurisdiction_tenant ON dynamic.tax_jurisdiction_master(tenant_id);
+CREATE INDEX idx_tax_jurisdiction_country ON dynamic.tax_jurisdiction_master(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

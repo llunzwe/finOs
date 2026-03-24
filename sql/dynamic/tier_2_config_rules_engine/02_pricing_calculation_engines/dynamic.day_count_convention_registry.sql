@@ -69,6 +69,11 @@ CREATE TABLE dynamic.day_count_convention_registry (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_convention_code_per_tenant UNIQUE (tenant_id, convention_code)
 ) PARTITION BY LIST (tenant_id);

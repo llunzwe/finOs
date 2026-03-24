@@ -68,18 +68,20 @@ CREATE TABLE dynamic_history.interest_accrual_suspense (
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     created_by VARCHAR(100),
-    
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     CONSTRAINT unique_accrual_per_day UNIQUE (tenant_id, container_id, accrual_date)
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.interest_accrual_suspense_default PARTITION OF dynamic_history.interest_accrual_suspense DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_accrual_suspense_container
-idx_accrual_suspense_date
-idx_accrual_suspense_status
+CREATE INDEX idx_accrual_suspense_container ON dynamic_history.interest_accrual_suspense(tenant_id);
+CREATE INDEX idx_accrual_suspense_date ON dynamic_history.interest_accrual_suspense(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

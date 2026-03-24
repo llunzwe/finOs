@@ -61,15 +61,20 @@ CREATE TABLE dynamic_history.workflow_history (
     
     -- Audit
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_by VARCHAR(100),
+updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+updated_by VARCHAR(100),
+version BIGINT NOT NULL DEFAULT 1,
 ) PARTITION BY LIST (tenant_id);
 
 CREATE TABLE dynamic_history.workflow_history_default PARTITION OF dynamic_history.workflow_history DEFAULT;
 
 -- ============================================================================
+-- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_workflow_history_instance
-idx_workflow_history_timestamp
+CREATE INDEX idx_workflow_history_instance ON dynamic_history.workflow_history(tenant_id);
+CREATE INDEX idx_workflow_history_timestamp ON dynamic_history.workflow_history(tenant_id);
 
 -- ============================================================================
 -- COMMENTS

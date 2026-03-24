@@ -56,6 +56,15 @@ CREATE TABLE dynamic.product_bundle_components (
     max_quantity INTEGER DEFAULT 1,
     
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    created_by VARCHAR(100),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
+    updated_by VARCHAR(100),
+    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_bundle_component UNIQUE (tenant_id, bundle_id, product_id)
 ) PARTITION BY LIST (tenant_id);
@@ -65,8 +74,8 @@ CREATE TABLE dynamic.product_bundle_components_default PARTITION OF dynamic.prod
 -- ============================================================================
 -- INDEXES
 -- ============================================================================
-idx_bundle_components_bundle
-idx_bundle_components_product
+CREATE INDEX idx_bundle_components_bundle ON dynamic.product_bundle_components(tenant_id, bundle_id);
+CREATE INDEX idx_bundle_components_product ON dynamic.product_bundle_components(tenant_id, product_id);
 
 -- ============================================================================
 -- COMMENTS
