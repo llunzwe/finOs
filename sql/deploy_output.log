@@ -1,0 +1,1195 @@
+[0;34m[INFO][0m FinOS Core Kernel V2.0 Deployment
+[0;34m[INFO][0m =================================
+[0;34m[INFO][0m Testing database connection...
+[0;32m[SUCCESS][0m Database connection successful
+[0;32m[SUCCESS][0m PostgreSQL version check passed (version: 180003)
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m PHASE 1: Deploying Foundation Layer (000-011)
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m Executing: 000: Extensions & Enterprise Foundation
+psql:foundation/000_extensions.sql:15: NOTICE:  extension "uuid-ossp" already exists, skipping
+psql:foundation/000_extensions.sql:16: NOTICE:  extension "pgcrypto" already exists, skipping
+psql:foundation/000_extensions.sql:17: NOTICE:  extension "ltree" already exists, skipping
+psql:foundation/000_extensions.sql:18: NOTICE:  extension "pg_stat_statements" already exists, skipping
+psql:foundation/000_extensions.sql:19: NOTICE:  extension "pg_trgm" already exists, skipping
+psql:foundation/000_extensions.sql:27: NOTICE:  PostGIS extension not available, skipping...
+psql:foundation/000_extensions.sql:49: NOTICE:  schema "core" already exists, skipping
+psql:foundation/000_extensions.sql:50: NOTICE:  schema "core_history" already exists, skipping
+psql:foundation/000_extensions.sql:51: NOTICE:  schema "core_crypto" already exists, skipping
+psql:foundation/000_extensions.sql:52: NOTICE:  schema "core_audit" already exists, skipping
+psql:foundation/000_extensions.sql:53: NOTICE:  schema "core_reporting" already exists, skipping
+psql:foundation/000_extensions.sql:106: NOTICE:  Citus extension not available, running in single-node mode...
+psql:foundation/000_extensions.sql:115: NOTICE:  extension "pgcrypto" already exists, skipping
+psql:foundation/000_extensions.sql:122: ERROR:  database "current" does not exist
+[0;32m[SUCCESS][0m Completed: 000: Extensions & Enterprise Foundation
+[0;34m[INFO][0m Executing: 001: Audit Foundation
+psql:foundation/001_audit.sql:28: ERROR:  relation "audit_log" already exists
+psql:foundation/001_audit.sql:32: WARNING:  column type "character varying" used for "table_name" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/001_audit.sql:32: WARNING:  column type "character varying" used for "operation" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/001_audit.sql:32: WARNING:  column type "character varying" used for "changed_by" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/001_audit.sql:32: ERROR:  cannot create a unique index without the column "changed_at" (used in partitioning)
+HINT:  If you're creating a hypertable on a table with a primary key, ensure the partitioning column is part of the primary or composite key.
+psql:foundation/001_audit.sql:34: ERROR:  relation "idx_audit_table" already exists
+psql:foundation/001_audit.sql:35: ERROR:  relation "idx_audit_row" already exists
+psql:foundation/001_audit.sql:36: ERROR:  relation "idx_audit_tenant" already exists
+psql:foundation/001_audit.sql:37: ERROR:  relation "idx_audit_correlation" already exists
+psql:foundation/001_audit.sql:176: ERROR:  relation "regulatory_snapshot_log" already exists
+psql:foundation/001_audit.sql:178: ERROR:  relation "idx_regulatory_snapshot_tenant" already exists
+psql:foundation/001_audit.sql:179: ERROR:  relation "idx_regulatory_snapshot_hash" already exists
+[0;32m[SUCCESS][0m Completed: 001: Audit Foundation
+[0;34m[INFO][0m Executing: 002: Utility Functions
+[0;32m[SUCCESS][0m Completed: 002: Utility Functions
+[0;34m[INFO][0m Executing: 003: PII Registry & Data Protection
+psql:foundation/003_pii_registry.sql:26: ERROR:  relation "pii_registry" already exists
+psql:foundation/003_pii_registry.sql:28: ERROR:  relation "idx_pii_registry_table" already exists
+psql:foundation/003_pii_registry.sql:29: ERROR:  relation "idx_pii_registry_category" already exists
+[0;32m[SUCCESS][0m Completed: 003: PII Registry & Data Protection
+[0;34m[INFO][0m Executing: 004: Partitioning & Scale Enhancements
+[0;32m[SUCCESS][0m Completed: 004: Partitioning & Scale Enhancements
+[0;34m[INFO][0m Executing: 005: Rate Limiting & Throttling
+psql:foundation/005_rate_limiting.sql:45: ERROR:  relation "rate_limit_policies" already exists
+psql:foundation/005_rate_limiting.sql:50: ERROR:  relation "core.economic_agents" does not exist
+psql:foundation/005_rate_limiting.sql:52: ERROR:  relation "idx_rate_policies_active" already exists
+psql:foundation/005_rate_limiting.sql:76: ERROR:  relation "rate_limit_counters" already exists
+psql:foundation/005_rate_limiting.sql:78: ERROR:  functions in index predicate must be marked IMMUTABLE
+psql:foundation/005_rate_limiting.sql:79: ERROR:  relation "idx_rate_counters_lookup" already exists
+[0;32m[SUCCESS][0m Completed: 005: Rate Limiting & Throttling
+[0;34m[INFO][0m Executing: 006: Webhook System
+psql:foundation/006_webhook.sql:53: ERROR:  relation "webhook_subscriptions" already exists
+psql:foundation/006_webhook.sql:55: ERROR:  relation "idx_webhook_subscriptions_active" already exists
+psql:foundation/006_webhook.sql:56: ERROR:  relation "idx_webhook_subscriptions_event" already exists
+psql:foundation/006_webhook.sql:96: ERROR:  relation "webhook_deliveries" already exists
+psql:foundation/006_webhook.sql:100: WARNING:  column type "character varying" used for "event_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/006_webhook.sql:100: WARNING:  column type "character varying" used for "status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/006_webhook.sql:100: WARNING:  column type "character varying" used for "request_signature" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/006_webhook.sql:100: WARNING:  column type "character varying" used for "error_code" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/006_webhook.sql:100: ERROR:  cannot create hypertable for table "webhook_deliveries" because it is part of a publication
+psql:foundation/006_webhook.sql:102: ERROR:  relation "idx_webhook_deliveries_pending" already exists
+psql:foundation/006_webhook.sql:103: ERROR:  relation "idx_webhook_deliveries_subscription" already exists
+[0;32m[SUCCESS][0m Completed: 006: Webhook System
+[0;34m[INFO][0m Executing: 007: Scheduled Jobs
+psql:foundation/007_scheduled_jobs.sql:18: NOTICE:  pg_cron extension not available, scheduled jobs must be managed externally
+psql:foundation/007_scheduled_jobs.sql:56: ERROR:  syntax error at or near "("
+LINE 36:     CONSTRAINT unique_job_name UNIQUE (COALESCE(tenant_id, '...
+                                                        ^
+psql:foundation/007_scheduled_jobs.sql:58: ERROR:  relation "core.scheduled_jobs" does not exist
+psql:foundation/007_scheduled_jobs.sql:60: ERROR:  relation "core.scheduled_jobs" does not exist
+[0;32m[SUCCESS][0m Completed: 007: Scheduled Jobs
+[0;34m[INFO][0m Executing: 008: Caching Layer
+psql:foundation/008_cache.sql:30: ERROR:  relation "cache_entries" already exists
+psql:foundation/008_cache.sql:32: ERROR:  functions in index predicate must be marked IMMUTABLE
+psql:foundation/008_cache.sql:33: ERROR:  relation "idx_cache_tenant" already exists
+[0;32m[SUCCESS][0m Completed: 008: Caching Layer
+[0;34m[INFO][0m Executing: 009: Algorithm Execution Logging
+psql:foundation/009_algorithm_execution.sql:45: ERROR:  relation "algorithm_executions" already exists
+psql:foundation/009_algorithm_execution.sql:49: WARNING:  column type "character varying" used for "algorithm_name" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/009_algorithm_execution.sql:49: WARNING:  column type "character varying" used for "algorithm_version" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/009_algorithm_execution.sql:49: WARNING:  column type "character varying" used for "algorithm_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/009_algorithm_execution.sql:49: WARNING:  column type "character varying" used for "status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/009_algorithm_execution.sql:49: WARNING:  column type "character varying" used for "executed_by" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/009_algorithm_execution.sql:49: ERROR:  cannot create a unique index without the column "created_at" (used in partitioning)
+HINT:  If you're creating a hypertable on a table with a primary key, ensure the partitioning column is part of the primary or composite key.
+psql:foundation/009_algorithm_execution.sql:51: ERROR:  relation "idx_algo_exec_name" already exists
+psql:foundation/009_algorithm_execution.sql:52: ERROR:  relation "idx_algo_exec_status" already exists
+[0;32m[SUCCESS][0m Completed: 009: Algorithm Execution Logging
+[0;34m[INFO][0m Executing: 010: Scalability & Monitoring
+psql:foundation/010_scalability.sql:160: ERROR:  relation "system_metrics" already exists
+psql:foundation/010_scalability.sql:164: WARNING:  column type "character varying" used for "metric_name" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:foundation/010_scalability.sql:164: WARNING:  column type "character varying" used for "metric_unit" does not follow best practices
+HINT:  Use datatype TEXT instead.
+        create_hypertable        
+---------------------------------
+ (3,core_audit,system_metrics,t)
+(1 row)
+
+psql:foundation/010_scalability.sql:166: ERROR:  relation "idx_system_metrics_name" already exists
+psql:foundation/010_scalability.sql:196: ERROR:  relation "error_log" already exists
+psql:foundation/010_scalability.sql:198: ERROR:  relation "idx_error_log_time" already exists
+psql:foundation/010_scalability.sql:199: ERROR:  relation "idx_error_log_code" already exists
+psql:foundation/010_scalability.sql:200: ERROR:  relation "idx_error_log_correlation" already exists
+psql:foundation/010_scalability.sql:352: ERROR:  relation "core_crypto.immutable_events" does not exist
+LINE 18: FROM core_crypto.immutable_events
+              ^
+psql:foundation/010_scalability.sql:354: ERROR:  relation "core.event_stream" does not exist
+[0;32m[SUCCESS][0m Completed: 010: Scalability & Monitoring
+[0;34m[INFO][0m Executing: 011: Grants & Permissions
+psql:foundation/011_grants.sql:74: ERROR:  relation "core.scheduled_jobs" does not exist
+psql:foundation/011_grants.sql:105: ERROR:  relation "core.event_stream" does not exist
+[0;32m[SUCCESS][0m Completed: 011: Grants & Permissions
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m PHASE 2: Deploying Core Primitives (000-024)
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m Executing: 000: Core Extensions Wrapper
+[0;32m[SUCCESS][0m Completed: 000: Core Extensions Wrapper
+[0;34m[INFO][0m Executing: 001: Primitive 1 - Identity & Tenancy
+psql:core/001_identity_and_tenancy.sql:10: NOTICE:  extension "uuid-ossp" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:11: NOTICE:  extension "pgcrypto" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:12: NOTICE:  extension "ltree" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:17: NOTICE:  schema "core" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:18: NOTICE:  schema "core_history" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:19: NOTICE:  schema "core_crypto" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:20: NOTICE:  schema "core_audit" already exists, skipping
+psql:core/001_identity_and_tenancy.sql:44: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "entity_sequences" lacks column "tenant_id" which is part of the partition key.
+psql:core/001_identity_and_tenancy.sql:48: ERROR:  relation "core.entity_sequences" does not exist
+psql:core/001_identity_and_tenancy.sql:50: ERROR:  relation "core.entity_sequences" does not exist
+psql:core/001_identity_and_tenancy.sql:52: ERROR:  relation "core.entity_sequences" does not exist
+psql:core/001_identity_and_tenancy.sql:156: ERROR:  relation "tenants" already exists
+psql:core/001_identity_and_tenancy.sql:159: ERROR:  relation "idx_tenants_status" already exists
+psql:core/001_identity_and_tenancy.sql:160: ERROR:  relation "idx_tenants_lei" already exists
+psql:core/001_identity_and_tenancy.sql:161: ERROR:  relation "idx_tenants_temporal" already exists
+psql:core/001_identity_and_tenancy.sql:163: ERROR:  relation "idx_tenants_active_temporal" already exists
+psql:core/001_identity_and_tenancy.sql:164: ERROR:  relation "idx_tenants_config" already exists
+psql:core/001_identity_and_tenancy.sql:185: ERROR:  trigger "trg_tenants_audit" for relation "tenants" already exists
+psql:core/001_identity_and_tenancy.sql:235: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "entities" lacks column "tenant_id" which is part of the partition key.
+psql:core/001_identity_and_tenancy.sql:239: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:242: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:243: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:244: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:245: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:246: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:247: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:249: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:251: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:254: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:257: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:299: ERROR:  relation "core.entities" does not exist
+psql:core/001_identity_and_tenancy.sql:300: ERROR:  relation "core.entity_sequences" does not exist
+psql:core/001_identity_and_tenancy.sql:302: ERROR:  relation "core.entity_sequences_sequence_id_seq" does not exist
+psql:core/001_identity_and_tenancy.sql:307: ERROR:  relation "core.entity_sequences" does not exist
+psql:core/001_identity_and_tenancy.sql:308: ERROR:  relation "core.entities" does not exist
+[0;32m[SUCCESS][0m Completed: 001: Primitive 1 - Identity & Tenancy
+[0;34m[INFO][0m Executing: 002: Primitive 2 - Value Container
+psql:core/002_value_container.sql:50: ERROR:  relation "currencies" already exists
+psql:core/002_value_container.sql:52: ERROR:  relation "idx_currencies_type" already exists
+psql:core/002_value_container.sql:53: ERROR:  relation "idx_currencies_country" already exists
+psql:core/002_value_container.sql:90: ERROR:  relation "country_codes" already exists
+psql:core/002_value_container.sql:92: ERROR:  relation "idx_country_fatf" already exists
+psql:core/002_value_container.sql:195: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "value_containers" lacks column "tenant_id" which is part of the partition key.
+psql:core/002_value_container.sql:198: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:201: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:202: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:203: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:204: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:205: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:206: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:207: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:208: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:209: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:211: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:226: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:228: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:229: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:230: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:253: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:270: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:312: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:314: ERROR:  relation "core.container_constraints" does not exist
+psql:core/002_value_container.sql:316: ERROR:  relation "core.container_constraints" does not exist
+psql:core/002_value_container.sql:351: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:353: ERROR:  relation "core.velocity_limits" does not exist
+psql:core/002_value_container.sql:354: ERROR:  relation "core.velocity_limits" does not exist
+psql:core/002_value_container.sql:356: ERROR:  relation "core.velocity_limits" does not exist
+psql:core/002_value_container.sql:386: ERROR:  relation "container_balances" already exists
+psql:core/002_value_container.sql:391: WARNING:  column type "character varying" used for "merkle_hash" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/002_value_container.sql:391: WARNING:  column type "character varying" used for "snapshot_reason" does not follow best practices
+HINT:  Use datatype TEXT instead.
+           create_hypertable           
+---------------------------------------
+ (4,core_history,container_balances,t)
+(1 row)
+
+psql:core/002_value_container.sql:394: ERROR:  relation "idx_balances_container_time" already exists
+psql:core/002_value_container.sql:395: ERROR:  relation "idx_balances_tenant_time" already exists
+psql:core/002_value_container.sql:415: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:419: ERROR:  relation "core_history.container_state_transitions" does not exist
+LINE 1: SELECT create_hypertable('core_history.container_state_trans...
+                                 ^
+psql:core/002_value_container.sql:421: ERROR:  relation "core_history.container_state_transitions" does not exist
+psql:core/002_value_container.sql:423: ERROR:  relation "core_history.container_state_transitions" does not exist
+psql:core/002_value_container.sql:437: ERROR:  value too long for type character(3)
+psql:core/002_value_container.sql:452: ERROR:  relation "core.value_containers" does not exist
+psql:core/002_value_container.sql:453: ERROR:  relation "core.container_constraints" does not exist
+psql:core/002_value_container.sql:454: ERROR:  relation "core.velocity_limits" does not exist
+psql:core/002_value_container.sql:456: ERROR:  relation "core_history.container_state_transitions" does not exist
+[0;32m[SUCCESS][0m Completed: 002: Primitive 2 - Value Container
+[0;34m[INFO][0m Executing: 003: Primitive 3 - Value Movement & Double-Entry
+psql:core/003_value_movement_and_double_entry.sql:37: ERROR:  relation "movement_types" already exists
+psql:core/003_value_movement_and_double_entry.sql:150: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "value_movements" lacks column "tenant_id" which is part of the partition key.
+psql:core/003_value_movement_and_double_entry.sql:153: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:156: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:158: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:159: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:160: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:161: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:162: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:163: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:164: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:165: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:167: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:169: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:170: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:223: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:225: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:226: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:227: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:228: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:229: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:230: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:231: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:233: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:307: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:326: ERROR:  relation "core.movement_legs" does not exist
+psql:core/003_value_movement_and_double_entry.sql:344: ERROR:  relation "movement_postings" already exists
+psql:core/003_value_movement_and_double_entry.sql:348: WARNING:  column type "character varying" used for "direction" does not follow best practices
+HINT:  Use datatype TEXT instead.
+          create_hypertable           
+--------------------------------------
+ (5,core_history,movement_postings,t)
+(1 row)
+
+psql:core/003_value_movement_and_double_entry.sql:350: ERROR:  relation "idx_postings_container" already exists
+psql:core/003_value_movement_and_double_entry.sql:351: ERROR:  relation "idx_postings_movement" already exists
+psql:core/003_value_movement_and_double_entry.sql:359: ERROR:  relation "core.value_movements" does not exist
+psql:core/003_value_movement_and_double_entry.sql:360: ERROR:  relation "core.movement_legs" does not exist
+[0;32m[SUCCESS][0m Completed: 003: Primitive 3 - Value Movement & Double-Entry
+[0;34m[INFO][0m Executing: 004: Primitive 4 - Economic Agent & Relationships
+psql:core/004_economic_agent_and_relationships.sql:119: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "economic_agents" lacks column "tenant_id" which is part of the partition key.
+psql:core/004_economic_agent_and_relationships.sql:122: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:125: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:126: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:127: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:129: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:130: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:132: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:133: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:134: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:135: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:136: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:138: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:140: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:141: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:159: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:195: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:197: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:198: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:199: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:200: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:202: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:264: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:267: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:268: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:269: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:270: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:271: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:272: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:273: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:275: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:297: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:317: ERROR:  relation "agent_relationship_changes" already exists
+psql:core/004_economic_agent_and_relationships.sql:321: WARNING:  column type "character varying" used for "type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/004_economic_agent_and_relationships.sql:321: WARNING:  column type "character varying" used for "change_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+               create_hypertable               
+-----------------------------------------------
+ (6,core_history,agent_relationship_changes,t)
+(1 row)
+
+psql:core/004_economic_agent_and_relationships.sql:323: ERROR:  relation "idx_rel_changes_agents" already exists
+psql:core/004_economic_agent_and_relationships.sql:352: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:354: ERROR:  relation "core_audit.sanctions_screenings" does not exist
+psql:core/004_economic_agent_and_relationships.sql:355: ERROR:  relation "core_audit.sanctions_screenings" does not exist
+psql:core/004_economic_agent_and_relationships.sql:383: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:385: ERROR:  relation "core_audit.kyc_verifications" does not exist
+psql:core/004_economic_agent_and_relationships.sql:386: ERROR:  relation "core_audit.kyc_verifications" does not exist
+psql:core/004_economic_agent_and_relationships.sql:391: ERROR:  relation "core.economic_agents" does not exist
+psql:core/004_economic_agent_and_relationships.sql:392: ERROR:  relation "core.agent_identifiers" does not exist
+psql:core/004_economic_agent_and_relationships.sql:393: ERROR:  relation "core.agent_relationships" does not exist
+psql:core/004_economic_agent_and_relationships.sql:395: ERROR:  relation "core_audit.sanctions_screenings" does not exist
+psql:core/004_economic_agent_and_relationships.sql:396: ERROR:  relation "core_audit.kyc_verifications" does not exist
+[0;32m[SUCCESS][0m Completed: 004: Primitive 4 - Economic Agent & Relationships
+[0;34m[INFO][0m Executing: 005: Primitive 5 - Temporal Transition (4D Time)
+psql:core/005_temporal_transition_4d.sql:81: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "temporal_transitions" lacks column "system_time" which is part of the partition key.
+psql:core/005_temporal_transition_4d.sql:85: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:88: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:89: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:90: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:92: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:93: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:94: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:95: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:96: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:98: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:100: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:119: ERROR:  relation "core.temporal_transitions" does not exist
+LINE 14: FROM core.temporal_transitions
+              ^
+psql:core/005_temporal_transition_4d.sql:121: ERROR:  relation "core.temporal_periods" does not exist
+psql:core/005_temporal_transition_4d.sql:215: ERROR:  type core.temporal_transitions does not exist
+LINE 8:     transition_record core.temporal_transitions
+                              ^
+psql:core/005_temporal_transition_4d.sql:217: ERROR:  could not find a function named "core.get_state_bitemporal"
+psql:core/005_temporal_transition_4d.sql:243: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:260: ERROR:  relation "temporal_snapshots" already exists
+psql:core/005_temporal_transition_4d.sql:264: WARNING:  column type "character varying" used for "snapshot_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/005_temporal_transition_4d.sql:264: WARNING:  column type "character varying" used for "merkle_root" does not follow best practices
+HINT:  Use datatype TEXT instead.
+           create_hypertable           
+---------------------------------------
+ (7,core_history,temporal_snapshots,t)
+(1 row)
+
+psql:core/005_temporal_transition_4d.sql:266: ERROR:  relation "idx_temporal_snapshots_type" already exists
+psql:core/005_temporal_transition_4d.sql:282: ERROR:  relation "core.temporal_transitions" does not exist
+LINE 10: FROM core.temporal_transitions
+              ^
+psql:core/005_temporal_transition_4d.sql:284: ERROR:  relation "core.temporal_metrics" does not exist
+psql:core/005_temporal_transition_4d.sql:289: ERROR:  relation "core.temporal_transitions" does not exist
+psql:core/005_temporal_transition_4d.sql:290: ERROR:  relation "core.temporal_periods" does not exist
+psql:core/005_temporal_transition_4d.sql:291: ERROR:  relation "core.temporal_metrics" does not exist
+psql:core/005_temporal_transition_4d.sql:295: ERROR:  could not find a function named "core.get_state_bitemporal"
+[0;32m[SUCCESS][0m Completed: 005: Primitive 5 - Temporal Transition (4D Time)
+[0;34m[INFO][0m Executing: 006: Primitive 6 - Immutable Event Store (DATOMIC MODEL)
+psql:core/006_immutable_event_store.sql:116: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  UNIQUE constraint on table "immutable_events" lacks column "event_time" which is part of the partition key.
+psql:core/006_immutable_event_store.sql:120: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:125: ERROR:  relation "core_crypto.immutable_events" does not exist
+LINE 1: SELECT create_hypertable('core_crypto.immutable_events', 'ev...
+                                 ^
+psql:core/006_immutable_event_store.sql:128: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:129: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:130: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:131: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:132: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:133: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:134: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:135: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:146: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:152: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:158: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:164: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:168: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:172: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:176: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:245: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:246: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:247: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:248: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:249: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:250: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:251: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:252: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:253: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:254: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:284: ERROR:  relation "event_verifications" already exists
+psql:core/006_immutable_event_store.sql:286: ERROR:  relation "idx_event_verifications_tenant" already exists
+psql:core/006_immutable_event_store.sql:336: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:342: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:344: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:346: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:489: ERROR:  syntax error at or near "DISTINCT"
+LINE 31:     DISTINCT ON (ie.datom_attribute);
+             ^
+psql:core/006_immutable_event_store.sql:491: ERROR:  could not find a function named "core_crypto.datom_query_eavt"
+psql:core/006_immutable_event_store.sql:605: ERROR:  relation "core_crypto.immutable_events" does not exist
+LINE 2:     LIKE core_crypto.immutable_events INCLUDING ALL,
+                 ^
+psql:core/006_immutable_event_store.sql:607: ERROR:  relation "core_crypto.archived_events" does not exist
+psql:core/006_immutable_event_store.sql:609: ERROR:  relation "core_crypto.archived_events" does not exist
+psql:core/006_immutable_event_store.sql:644: ERROR:  relation "event_stream_positions" already exists
+psql:core/006_immutable_event_store.sql:646: ERROR:  relation "idx_stream_positions_active" already exists
+psql:core/006_immutable_event_store.sql:661: ERROR:  trigger "trg_stream_position_update" for relation "event_stream_positions" already exists
+psql:core/006_immutable_event_store.sql:666: ERROR:  relation "core_crypto.immutable_events" does not exist
+psql:core/006_immutable_event_store.sql:668: ERROR:  relation "core_crypto.archived_events" does not exist
+psql:core/006_immutable_event_store.sql:674: ERROR:  could not find a function named "core_crypto.datom_query_eavt"
+[0;32m[SUCCESS][0m Completed: 006: Primitive 6 - Immutable Event Store (DATOMIC MODEL)
+[0;34m[INFO][0m Executing: 007: Primitive 7 - Chart of Accounts
+psql:core/007_chart_of_accounts.sql:81: ERROR:  relation "chart_of_accounts" already exists
+psql:core/007_chart_of_accounts.sql:84: ERROR:  relation "idx_coa_type" already exists
+psql:core/007_chart_of_accounts.sql:85: ERROR:  relation "idx_coa_hierarchy" already exists
+psql:core/007_chart_of_accounts.sql:86: ERROR:  relation "idx_coa_path" already exists
+psql:core/007_chart_of_accounts.sql:87: ERROR:  relation "idx_coa_statement" already exists
+psql:core/007_chart_of_accounts.sql:88: ERROR:  relation "idx_coa_leaf" already exists
+psql:core/007_chart_of_accounts.sql:89: ERROR:  relation "idx_coa_correlation" already exists
+psql:core/007_chart_of_accounts.sql:91: ERROR:  relation "idx_coa_active_composite" already exists
+psql:core/007_chart_of_accounts.sql:123: ERROR:  trigger "trg_coa_hierarchy" for relation "chart_of_accounts" already exists
+psql:core/007_chart_of_accounts.sql:158: ERROR:  relation "account_mappings" already exists
+psql:core/007_chart_of_accounts.sql:160: ERROR:  relation "idx_account_mappings_source" already exists
+psql:core/007_chart_of_accounts.sql:161: ERROR:  relation "idx_account_mappings_target" already exists
+psql:core/007_chart_of_accounts.sql:197: ERROR:  relation "account_balances" already exists
+psql:core/007_chart_of_accounts.sql:199: ERROR:  relation "idx_account_balances_period" already exists
+psql:core/007_chart_of_accounts.sql:200: ERROR:  relation "idx_account_balances_account" already exists
+psql:core/007_chart_of_accounts.sql:232: ERROR:  relation "trial_balances" already exists
+psql:core/007_chart_of_accounts.sql:234: ERROR:  relation "idx_trial_balances_period" already exists
+psql:core/007_chart_of_accounts.sql:251: ERROR:  relation "trial_balance_details" already exists
+[0;32m[SUCCESS][0m Completed: 007: Primitive 7 - Chart of Accounts
+[0;34m[INFO][0m Executing: 008: Primitive 8 - Monetary System & Valuation
+psql:core/008_monetary_system_and_valuation.sql:62: ERROR:  relation "exchange_rates" already exists
+psql:core/008_monetary_system_and_valuation.sql:67: ERROR:  relation "idx_exchange_rates_lookup" already exists
+psql:core/008_monetary_system_and_valuation.sql:68: ERROR:  relation "idx_exchange_rates_source" already exists
+psql:core/008_monetary_system_and_valuation.sql:69: ERROR:  relation "idx_exchange_rates_tenant" already exists
+psql:core/008_monetary_system_and_valuation.sql:70: ERROR:  relation "idx_exchange_rates_correlation" already exists
+psql:core/008_monetary_system_and_valuation.sql:102: ERROR:  relation "currency_pairs" already exists
+psql:core/008_monetary_system_and_valuation.sql:104: ERROR:  relation "idx_currency_pairs_active" already exists
+psql:core/008_monetary_system_and_valuation.sql:137: ERROR:  relation "price_history" already exists
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "instrument_code" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "instrument_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "price_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "price_source" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "source_reference" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "market_code" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/008_monetary_system_and_valuation.sql:141: WARNING:  column type "character varying" used for "data_quality" does not follow best practices
+HINT:  Use datatype TEXT instead.
+        create_hypertable         
+----------------------------------
+ (8,core_history,price_history,t)
+(1 row)
+
+psql:core/008_monetary_system_and_valuation.sql:143: ERROR:  relation "idx_price_history_instrument" already exists
+psql:core/008_monetary_system_and_valuation.sql:144: ERROR:  relation "idx_price_history_type" already exists
+psql:core/008_monetary_system_and_valuation.sql:207: ERROR:  relation "core.economic_agents" does not exist
+psql:core/008_monetary_system_and_valuation.sql:209: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:210: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:211: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:212: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:213: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:215: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:254: ERROR:  relation "core.value_containers" does not exist
+psql:core/008_monetary_system_and_valuation.sql:256: ERROR:  relation "core.account_numbers" does not exist
+psql:core/008_monetary_system_and_valuation.sql:257: ERROR:  relation "core.account_numbers" does not exist
+psql:core/008_monetary_system_and_valuation.sql:258: ERROR:  relation "core.account_numbers" does not exist
+psql:core/008_monetary_system_and_valuation.sql:260: ERROR:  relation "core.account_numbers" does not exist
+psql:core/008_monetary_system_and_valuation.sql:287: ERROR:  relation "reference_data" already exists
+psql:core/008_monetary_system_and_valuation.sql:289: ERROR:  relation "idx_reference_data_type" already exists
+psql:core/008_monetary_system_and_valuation.sql:290: ERROR:  relation "idx_reference_data_parent" already exists
+psql:core/008_monetary_system_and_valuation.sql:327: ERROR:  relation "current_exchange_rates" already exists
+psql:core/008_monetary_system_and_valuation.sql:331: ERROR:  relation "idx_current_rates" already exists
+psql:core/008_monetary_system_and_valuation.sql:348: ERROR:  relation "core.instruments" does not exist
+psql:core/008_monetary_system_and_valuation.sql:349: ERROR:  relation "core.account_numbers" does not exist
+[0;32m[SUCCESS][0m Completed: 008: Primitive 8 - Monetary System & Valuation
+[0;34m[INFO][0m Executing: 009: Primitive 9 - Settlement & Finality
+psql:core/009_settlement_and_finality.sql:96: ERROR:  relation "core.value_movements" does not exist
+psql:core/009_settlement_and_finality.sql:99: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:100: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:101: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:102: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:103: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:104: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:105: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:106: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:108: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:110: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:111: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:134: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:183: ERROR:  cannot use generated column "net_position" in column generation expression
+LINE 27: ...AL(28,8) GENERATED ALWAYS AS (control_total - ABS(net_positi...
+                                                              ^
+DETAIL:  A generated column cannot reference another generated column.
+psql:core/009_settlement_and_finality.sql:185: ERROR:  relation "core.settlement_batches" does not exist
+psql:core/009_settlement_and_finality.sql:186: ERROR:  relation "core.settlement_batches" does not exist
+psql:core/009_settlement_and_finality.sql:188: ERROR:  relation "core.settlement_batches" does not exist
+psql:core/009_settlement_and_finality.sql:207: ERROR:  relation "core.settlement_batches" does not exist
+psql:core/009_settlement_and_finality.sql:209: ERROR:  relation "core.batch_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:210: ERROR:  relation "core.batch_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:240: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:242: ERROR:  relation "core.settlement_queue" does not exist
+psql:core/009_settlement_and_finality.sql:243: ERROR:  relation "core.settlement_queue" does not exist
+psql:core/009_settlement_and_finality.sql:245: ERROR:  relation "core.settlement_queue" does not exist
+psql:core/009_settlement_and_finality.sql:269: ERROR:  relation "settlement_finality_log" already exists
+psql:core/009_settlement_and_finality.sql:273: WARNING:  column type "character varying" used for "previous_status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/009_settlement_and_finality.sql:273: WARNING:  column type "character varying" used for "new_status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/009_settlement_and_finality.sql:273: WARNING:  column type "character varying" used for "finality_transaction_hash" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/009_settlement_and_finality.sql:273: WARNING:  column type "character varying" used for "settlement_method" does not follow best practices
+HINT:  Use datatype TEXT instead.
+             create_hypertable              
+--------------------------------------------
+ (9,core_history,settlement_finality_log,t)
+(1 row)
+
+psql:core/009_settlement_and_finality.sql:275: ERROR:  relation "idx_finality_log_instruction" already exists
+psql:core/009_settlement_and_finality.sql:312: ERROR:  relation "core.economic_agents" does not exist
+psql:core/009_settlement_and_finality.sql:314: ERROR:  relation "core.liquidity_positions" does not exist
+psql:core/009_settlement_and_finality.sql:315: ERROR:  relation "core.liquidity_positions" does not exist
+psql:core/009_settlement_and_finality.sql:317: ERROR:  relation "core.liquidity_positions" does not exist
+psql:core/009_settlement_and_finality.sql:322: ERROR:  relation "core.settlement_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:323: ERROR:  relation "core.settlement_batches" does not exist
+psql:core/009_settlement_and_finality.sql:324: ERROR:  relation "core.batch_instructions" does not exist
+psql:core/009_settlement_and_finality.sql:325: ERROR:  relation "core.settlement_queue" does not exist
+psql:core/009_settlement_and_finality.sql:327: ERROR:  relation "core.liquidity_positions" does not exist
+[0;32m[SUCCESS][0m Completed: 009: Primitive 9 - Settlement & Finality
+[0;34m[INFO][0m Executing: 010: Primitive 10 - Reconciliation & Suspense
+psql:core/010_reconciliation_and_suspense.sql:76: ERROR:  relation "core.value_containers" does not exist
+psql:core/010_reconciliation_and_suspense.sql:78: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:79: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:80: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:81: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:83: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:131: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:133: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:134: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:135: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:136: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:137: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:138: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:140: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:187: ERROR:  relation "reconciliation_rules" already exists
+psql:core/010_reconciliation_and_suspense.sql:189: ERROR:  relation "idx_recon_rules_active" already exists
+psql:core/010_reconciliation_and_suspense.sql:249: ERROR:  generation expression is not immutable
+psql:core/010_reconciliation_and_suspense.sql:252: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:253: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:254: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:255: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:256: ERROR:  relation "idx_recon_rules_correlation" already exists
+psql:core/010_reconciliation_and_suspense.sql:257: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:259: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:280: ERROR:  relation "core.suspense_items" does not exist
+LINE 15: FROM core.suspense_items
+              ^
+psql:core/010_reconciliation_and_suspense.sql:282: ERROR:  relation "core.suspense_aging" does not exist
+psql:core/010_reconciliation_and_suspense.sql:304: ERROR:  relation "reconciliation_activity" already exists
+psql:core/010_reconciliation_and_suspense.sql:308: WARNING:  column type "character varying" used for "activity_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/010_reconciliation_and_suspense.sql:308: WARNING:  column type "character varying" used for "previous_status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/010_reconciliation_and_suspense.sql:308: WARNING:  column type "character varying" used for "new_status" does not follow best practices
+HINT:  Use datatype TEXT instead.
+              create_hypertable              
+---------------------------------------------
+ (10,core_history,reconciliation_activity,t)
+(1 row)
+
+psql:core/010_reconciliation_and_suspense.sql:310: ERROR:  relation "idx_recon_activity_type" already exists
+psql:core/010_reconciliation_and_suspense.sql:390: ERROR:  relation "core.reconciliation_runs" does not exist
+psql:core/010_reconciliation_and_suspense.sql:391: ERROR:  relation "core.reconciliation_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:393: ERROR:  relation "core.suspense_items" does not exist
+psql:core/010_reconciliation_and_suspense.sql:394: ERROR:  relation "core.suspense_aging" does not exist
+[0;32m[SUCCESS][0m Completed: 010: Primitive 10 - Reconciliation & Suspense
+[0;34m[INFO][0m Executing: 011: Primitive 11 - Control & Batch Processing
+psql:core/011_control_and_batch_processing.sql:96: ERROR:  relation "core.economic_agents" does not exist
+psql:core/011_control_and_batch_processing.sql:98: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:99: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:100: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:101: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:102: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:104: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:106: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:107: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:163: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:165: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:166: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:167: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:168: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:170: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:228: ERROR:  relation "core.economic_agents" does not exist
+psql:core/011_control_and_batch_processing.sql:230: ERROR:  relation "core.eod_runs" does not exist
+psql:core/011_control_and_batch_processing.sql:231: ERROR:  relation "core.eod_runs" does not exist
+psql:core/011_control_and_batch_processing.sql:232: ERROR:  relation "core.eod_runs" does not exist
+psql:core/011_control_and_batch_processing.sql:234: ERROR:  relation "core.eod_runs" does not exist
+psql:core/011_control_and_batch_processing.sql:259: ERROR:  relation "eod_stages" already exists
+psql:core/011_control_and_batch_processing.sql:277: ERROR:  relation "batch_processing_log" already exists
+psql:core/011_control_and_batch_processing.sql:281: WARNING:  column type "character varying" used for "event_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+            create_hypertable             
+------------------------------------------
+ (11,core_history,batch_processing_log,t)
+(1 row)
+
+psql:core/011_control_and_batch_processing.sql:283: ERROR:  relation "idx_batch_log_batch" already exists
+psql:core/011_control_and_batch_processing.sql:323: ERROR:  relation "batch_validation_rules" already exists
+psql:core/011_control_and_batch_processing.sql:325: ERROR:  relation "idx_batch_rules_active" already exists
+psql:core/011_control_and_batch_processing.sql:326: ERROR:  relation "idx_batch_rules_correlation" already exists
+psql:core/011_control_and_batch_processing.sql:365: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:455: ERROR:  relation "core.control_batches" does not exist
+psql:core/011_control_and_batch_processing.sql:456: ERROR:  relation "core.control_entries" does not exist
+psql:core/011_control_and_batch_processing.sql:457: ERROR:  relation "core.eod_runs" does not exist
+[0;32m[SUCCESS][0m Completed: 011: Primitive 11 - Control & Batch Processing
+[0;34m[INFO][0m Executing: 012: Primitive 12 - Entitlements & Authorization
+psql:core/012_entitlements_and_authorization.sql:71: ERROR:  relation "core.economic_agents" does not exist
+psql:core/012_entitlements_and_authorization.sql:73: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:74: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:75: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:76: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:77: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:78: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:80: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:144: ERROR:  type "geography" does not exist
+LINE 41:     geolocation GEOGRAPHY(POINT),
+                         ^
+psql:core/012_entitlements_and_authorization.sql:146: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:147: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:148: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:149: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:150: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:152: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:186: ERROR:  relation "roles" already exists
+psql:core/012_entitlements_and_authorization.sql:188: ERROR:  relation "idx_roles_active" already exists
+psql:core/012_entitlements_and_authorization.sql:223: ERROR:  relation "core.economic_agents" does not exist
+psql:core/012_entitlements_and_authorization.sql:225: ERROR:  relation "core.agent_roles" does not exist
+psql:core/012_entitlements_and_authorization.sql:226: ERROR:  relation "core.agent_roles" does not exist
+psql:core/012_entitlements_and_authorization.sql:228: ERROR:  relation "core.agent_roles" does not exist
+psql:core/012_entitlements_and_authorization.sql:262: ERROR:  relation "access_control_lists" already exists
+psql:core/012_entitlements_and_authorization.sql:264: ERROR:  relation "idx_acl_resource" already exists
+psql:core/012_entitlements_and_authorization.sql:265: ERROR:  relation "idx_acl_principal" already exists
+psql:core/012_entitlements_and_authorization.sql:292: ERROR:  type "geography" does not exist
+LINE 18:     geolocation GEOGRAPHY(POINT),
+                         ^
+psql:core/012_entitlements_and_authorization.sql:296: ERROR:  relation "core_history.authorization_attempts" does not exist
+LINE 1: SELECT create_hypertable('core_history.authorization_attempt...
+                                 ^
+psql:core/012_entitlements_and_authorization.sql:298: ERROR:  relation "core_history.authorization_attempts" does not exist
+psql:core/012_entitlements_and_authorization.sql:299: ERROR:  relation "core_history.authorization_attempts" does not exist
+psql:core/012_entitlements_and_authorization.sql:301: ERROR:  relation "core_history.authorization_attempts" does not exist
+psql:core/012_entitlements_and_authorization.sql:358: ERROR:  relation "core.entitlements" does not exist
+psql:core/012_entitlements_and_authorization.sql:359: ERROR:  relation "core.authorizations" does not exist
+psql:core/012_entitlements_and_authorization.sql:361: ERROR:  relation "core.agent_roles" does not exist
+psql:core/012_entitlements_and_authorization.sql:363: ERROR:  relation "core_history.authorization_attempts" does not exist
+[0;32m[SUCCESS][0m Completed: 012: Primitive 12 - Entitlements & Authorization
+[0;34m[INFO][0m Executing: 013: Primitive 13 - Geography & Jurisdiction
+psql:core/013_geography_and_jurisdiction.sql:91: ERROR:  relation "jurisdictions" already exists
+psql:core/013_geography_and_jurisdiction.sql:93: ERROR:  relation "idx_jurisdictions_type" already exists
+psql:core/013_geography_and_jurisdiction.sql:94: ERROR:  relation "idx_jurisdictions_country" already exists
+psql:core/013_geography_and_jurisdiction.sql:95: ERROR:  relation "idx_jurisdictions_fatf" already exists
+psql:core/013_geography_and_jurisdiction.sql:96: ERROR:  relation "idx_jurisdictions_hierarchy" already exists
+psql:core/013_geography_and_jurisdiction.sql:97: ERROR:  relation "idx_jurisdictions_parent" already exists
+psql:core/013_geography_and_jurisdiction.sql:98: ERROR:  relation "idx_jurisdictions_timezone" already exists
+psql:core/013_geography_and_jurisdiction.sql:99: ERROR:  relation "idx_jurisdictions_correlation" already exists
+psql:core/013_geography_and_jurisdiction.sql:122: ERROR:  trigger "trg_jurisdiction_hierarchy" for relation "jurisdictions" already exists
+psql:core/013_geography_and_jurisdiction.sql:194: ERROR:  type "geography" does not exist
+LINE 33:     location GEOGRAPHY(POINT),
+                      ^
+psql:core/013_geography_and_jurisdiction.sql:197: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:198: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:199: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:200: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:201: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:202: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:203: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:205: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:234: ERROR:  multiple primary keys for table "timezone_rules" are not allowed
+LINE 24:     PRIMARY KEY (timezone, year)
+             ^
+psql:core/013_geography_and_jurisdiction.sql:236: ERROR:  relation "core.timezone_rules" does not exist
+psql:core/013_geography_and_jurisdiction.sql:238: ERROR:  relation "core.timezone_rules" does not exist
+psql:core/013_geography_and_jurisdiction.sql:259: ERROR:  relation "holiday_calendars" already exists
+psql:core/013_geography_and_jurisdiction.sql:279: ERROR:  relation "holidays" already exists
+psql:core/013_geography_and_jurisdiction.sql:281: ERROR:  relation "idx_holidays_calendar" already exists
+psql:core/013_geography_and_jurisdiction.sql:282: ERROR:  relation "idx_holidays_date" already exists
+psql:core/013_geography_and_jurisdiction.sql:317: ERROR:  relation "geographic_risk_assessments" already exists
+psql:core/013_geography_and_jurisdiction.sql:319: ERROR:  relation "idx_geo_risk_jurisdiction" already exists
+psql:core/013_geography_and_jurisdiction.sql:320: ERROR:  relation "idx_geo_risk_level" already exists
+psql:core/013_geography_and_jurisdiction.sql:419: ERROR:  insert or update on table "jurisdictions" violates foreign key constraint "jurisdictions_currency_code_fkey"
+DETAIL:  Key (currency_code)=(USD) is not present in table "currencies".
+psql:core/013_geography_and_jurisdiction.sql:425: ERROR:  relation "core.addresses" does not exist
+psql:core/013_geography_and_jurisdiction.sql:426: ERROR:  relation "core.timezone_rules" does not exist
+[0;32m[SUCCESS][0m Completed: 013: Primitive 13 - Geography & Jurisdiction
+[0;34m[INFO][0m Executing: 014: Primitive 14 - Provisioning & Reserves
+psql:core/014_provisioning_and_reserves.sql:94: ERROR:  relation "core.value_containers" does not exist
+psql:core/014_provisioning_and_reserves.sql:96: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:97: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:98: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:99: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:100: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:102: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:103: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:123: ERROR:  relation "provision_history" already exists
+           create_hypertable           
+---------------------------------------
+ (12,core_history,provision_history,t)
+(1 row)
+
+psql:core/014_provisioning_and_reserves.sql:129: ERROR:  relation "idx_provision_history_container" already exists
+psql:core/014_provisioning_and_reserves.sql:169: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:171: ERROR:  relation "core.reserve_utilizations" does not exist
+psql:core/014_provisioning_and_reserves.sql:172: ERROR:  relation "core.reserve_utilizations" does not exist
+psql:core/014_provisioning_and_reserves.sql:174: ERROR:  relation "core.reserve_utilizations" does not exist
+psql:core/014_provisioning_and_reserves.sql:213: ERROR:  relation "lgd_models" already exists
+psql:core/014_provisioning_and_reserves.sql:249: ERROR:  relation "pd_models" already exists
+psql:core/014_provisioning_and_reserves.sql:288: ERROR:  relation "core.value_containers" does not exist
+psql:core/014_provisioning_and_reserves.sql:290: ERROR:  relation "core.ead_calculations" does not exist
+psql:core/014_provisioning_and_reserves.sql:291: ERROR:  relation "core.ead_calculations" does not exist
+psql:core/014_provisioning_and_reserves.sql:293: ERROR:  relation "core.ead_calculations" does not exist
+psql:core/014_provisioning_and_reserves.sql:325: ERROR:  relation "core.provisions" does not exist
+psql:core/014_provisioning_and_reserves.sql:327: ERROR:  relation "core.reserve_utilizations" does not exist
+psql:core/014_provisioning_and_reserves.sql:330: ERROR:  relation "core.ead_calculations" does not exist
+[0;32m[SUCCESS][0m Completed: 014: Primitive 14 - Provisioning & Reserves
+[0;34m[INFO][0m Executing: 015: Primitive 15 - Document & Evidence References
+psql:core/015_document_and_evidence_references.sql:107: ERROR:  relation "core.economic_agents" does not exist
+psql:core/015_document_and_evidence_references.sql:110: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:111: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:112: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:113: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:114: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:115: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:116: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:117: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:119: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:120: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:121: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:143: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:145: ERROR:  relation "core.document_versions" does not exist
+psql:core/015_document_and_evidence_references.sql:147: ERROR:  relation "core.document_versions" does not exist
+psql:core/015_document_and_evidence_references.sql:191: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:193: ERROR:  relation "core.document_verifications" does not exist
+psql:core/015_document_and_evidence_references.sql:194: ERROR:  relation "core.document_verifications" does not exist
+psql:core/015_document_and_evidence_references.sql:196: ERROR:  relation "core.document_verifications" does not exist
+psql:core/015_document_and_evidence_references.sql:198: ERROR:  relation "core.document_verifications" does not exist
+psql:core/015_document_and_evidence_references.sql:228: ERROR:  type "geography" does not exist
+LINE 19:     geolocation GEOGRAPHY(POINT),
+                         ^
+psql:core/015_document_and_evidence_references.sql:233: ERROR:  relation "core_audit.document_access_logs" does not exist
+LINE 1: SELECT create_hypertable('core_audit.document_access_logs', ...
+                                 ^
+psql:core/015_document_and_evidence_references.sql:235: ERROR:  relation "core_audit.document_access_logs" does not exist
+psql:core/015_document_and_evidence_references.sql:236: ERROR:  relation "core_audit.document_access_logs" does not exist
+psql:core/015_document_and_evidence_references.sql:237: ERROR:  relation "core_audit.document_access_logs" does not exist
+psql:core/015_document_and_evidence_references.sql:239: ERROR:  relation "core_audit.document_access_logs" does not exist
+psql:core/015_document_and_evidence_references.sql:270: ERROR:  relation "retention_policies" already exists
+psql:core/015_document_and_evidence_references.sql:298: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:300: ERROR:  relation "core.document_retention_queue" does not exist
+psql:core/015_document_and_evidence_references.sql:301: ERROR:  relation "core.document_retention_queue" does not exist
+psql:core/015_document_and_evidence_references.sql:303: ERROR:  relation "core.document_retention_queue" does not exist
+psql:core/015_document_and_evidence_references.sql:345: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:347: ERROR:  relation "core.digital_signatures" does not exist
+psql:core/015_document_and_evidence_references.sql:348: ERROR:  relation "core.digital_signatures" does not exist
+psql:core/015_document_and_evidence_references.sql:350: ERROR:  relation "core.digital_signatures" does not exist
+psql:core/015_document_and_evidence_references.sql:386: ERROR:  relation "core.documents" does not exist
+psql:core/015_document_and_evidence_references.sql:387: ERROR:  relation "core.document_versions" does not exist
+psql:core/015_document_and_evidence_references.sql:388: ERROR:  relation "core.document_verifications" does not exist
+psql:core/015_document_and_evidence_references.sql:389: ERROR:  relation "core_audit.document_access_logs" does not exist
+psql:core/015_document_and_evidence_references.sql:391: ERROR:  relation "core.document_retention_queue" does not exist
+psql:core/015_document_and_evidence_references.sql:392: ERROR:  relation "core.digital_signatures" does not exist
+[0;32m[SUCCESS][0m Completed: 015: Primitive 15 - Document & Evidence References
+[0;34m[INFO][0m Executing: 016: Primitive 16 - Sub-ledger & Segregation
+psql:core/016_sub_ledger_and_segregation.sql:83: ERROR:  relation "core.value_containers" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:85: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:86: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:87: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:88: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:89: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:90: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:92: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:93: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:94: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:160: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:162: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:163: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:164: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:165: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:166: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:168: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:191: ERROR:  relation "sub_ledger_balances" already exists
+            create_hypertable            
+-----------------------------------------
+ (13,core_history,sub_ledger_balances,t)
+(1 row)
+
+psql:core/016_sub_ledger_and_segregation.sql:197: ERROR:  relation "idx_sub_ledger_master" already exists
+psql:core/016_sub_ledger_and_segregation.sql:198: ERROR:  relation "idx_sub_ledger_sub" already exists
+psql:core/016_sub_ledger_and_segregation.sql:239: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:241: ERROR:  relation "core.sub_ledger_reconciliations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:242: ERROR:  relation "core.sub_ledger_reconciliations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:244: ERROR:  relation "core.sub_ledger_reconciliations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:274: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:276: ERROR:  relation "core.segregation_rules" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:312: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:314: ERROR:  relation "core.client_money_calculations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:315: ERROR:  relation "core.client_money_calculations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:317: ERROR:  relation "core.client_money_calculations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:366: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:371: ERROR:  relation "core.master_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:372: ERROR:  relation "core.sub_accounts" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:374: ERROR:  relation "core.sub_ledger_reconciliations" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:375: ERROR:  relation "core.segregation_rules" does not exist
+psql:core/016_sub_ledger_and_segregation.sql:376: ERROR:  relation "core.client_money_calculations" does not exist
+[0;32m[SUCCESS][0m Completed: 016: Primitive 16 - Sub-ledger & Segregation
+[0;34m[INFO][0m Executing: 017: Primitive 17 - Legal Entity Hierarchy & Consolidation
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:95: ERROR:  relation "core.economic_agents" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:97: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:98: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:99: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:100: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:101: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:102: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:103: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:105: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:155: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:157: ERROR:  relation "core.ownership_hierarchies" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:158: ERROR:  relation "core.ownership_hierarchies" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:159: ERROR:  relation "core.ownership_hierarchies" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:161: ERROR:  relation "core.ownership_hierarchies" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:197: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:199: ERROR:  relation "core.consolidation_rules" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:201: ERROR:  relation "core.consolidation_rules" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:266: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:268: ERROR:  relation "core.consolidated_positions" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:269: ERROR:  relation "core.consolidated_positions" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:271: ERROR:  relation "core.consolidated_positions" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:307: ERROR:  relation "core.consolidated_positions" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:309: ERROR:  relation "core.intercompany_eliminations" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:310: ERROR:  relation "core.intercompany_eliminations" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:312: ERROR:  relation "core.intercompany_eliminations" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:356: ERROR:  relation "core.legal_entities" does not exist
+LINE 11:     FROM core.legal_entities
+                  ^
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:358: ERROR:  relation "core.group_structure" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:363: ERROR:  relation "core.legal_entities" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:364: ERROR:  relation "core.ownership_hierarchies" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:365: ERROR:  relation "core.consolidation_rules" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:366: ERROR:  relation "core.consolidated_positions" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:367: ERROR:  relation "core.intercompany_eliminations" does not exist
+psql:core/017_legal_entity_hierarchy_and_group_consolidation.sql:368: ERROR:  relation "core.group_structure" does not exist
+[0;32m[SUCCESS][0m Completed: 017: Primitive 17 - Legal Entity Hierarchy & Consolidation
+[0;34m[INFO][0m Executing: 018: Primitive 18 - Capital & Liquidity Position Tracking
+psql:core/018_capital_and_liquidity_position_tracking.sql:73: ERROR:  relation "core.legal_entities" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:75: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:76: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:77: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:78: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:80: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:122: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:124: ERROR:  relation "core.risk_weighted_assets" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:125: ERROR:  relation "core.risk_weighted_assets" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:126: ERROR:  relation "core.risk_weighted_assets" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:128: ERROR:  relation "core.risk_weighted_assets" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:232: ERROR:  cannot use generated column "total_tier_1" in column generation expression
+LINE 51: ... total_capital DECIMAL(28,8) GENERATED ALWAYS AS (total_tier...
+                                                              ^
+DETAIL:  A generated column cannot reference another generated column.
+psql:core/018_capital_and_liquidity_position_tracking.sql:234: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:236: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:237: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:239: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:240: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:301: ERROR:  cannot use generated column "total_inflows" in column generation expression
+LINE 39: ...CIMAL(28,8) GENERATED ALWAYS AS (total_outflows - total_infl...
+                                                              ^
+DETAIL:  A generated column cannot reference another generated column.
+psql:core/018_capital_and_liquidity_position_tracking.sql:303: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:304: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:305: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:307: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:308: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:357: ERROR:  cannot use generated column "nsfr_ratio" in column generation expression
+LINE 31:     nsfr_compliant BOOLEAN GENERATED ALWAYS AS (nsfr_ratio >...
+                                                         ^
+DETAIL:  A generated column cannot reference another generated column.
+psql:core/018_capital_and_liquidity_position_tracking.sql:359: ERROR:  relation "core.stable_funding_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:360: ERROR:  relation "core.stable_funding_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:362: ERROR:  relation "core.stable_funding_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:414: ERROR:  relation "stress_scenarios" already exists
+psql:core/018_capital_and_liquidity_position_tracking.sql:416: ERROR:  relation "idx_stress_scenarios_type" already exists
+psql:core/018_capital_and_liquidity_position_tracking.sql:417: ERROR:  relation "idx_stress_scenarios_status" already exists
+psql:core/018_capital_and_liquidity_position_tracking.sql:418: ERROR:  relation "idx_stress_scenarios_correlation" already exists
+psql:core/018_capital_and_liquidity_position_tracking.sql:463: ERROR:  cannot use generated column "total_exposure" in column generation expression
+LINE 22:         CASE WHEN total_exposure > 0 THEN (tier_1_capital / ...
+                           ^
+DETAIL:  A generated column cannot reference another generated column.
+psql:core/018_capital_and_liquidity_position_tracking.sql:465: ERROR:  relation "core.leverage_exposures" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:466: ERROR:  relation "core.leverage_exposures" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:468: ERROR:  relation "core.leverage_exposures" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:504: ERROR:  relation "core.legal_entities" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:506: ERROR:  relation "core.regulatory_snapshots" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:508: ERROR:  relation "core.regulatory_snapshots" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:555: ERROR:  relation "core.capital_positions" does not exist
+LINE 40: FROM core.capital_positions cp
+              ^
+psql:core/018_capital_and_liquidity_position_tracking.sql:557: ERROR:  relation "core.capital_adequacy_summary" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:562: ERROR:  relation "core.exposure_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:563: ERROR:  relation "core.risk_weighted_assets" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:564: ERROR:  relation "core.capital_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:565: ERROR:  relation "core.lcr_calculations" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:566: ERROR:  relation "core.stable_funding_positions" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:568: ERROR:  relation "core.leverage_exposures" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:569: ERROR:  relation "core.regulatory_snapshots" does not exist
+psql:core/018_capital_and_liquidity_position_tracking.sql:570: ERROR:  relation "core.capital_adequacy_summary" does not exist
+[0;32m[SUCCESS][0m Completed: 018: Primitive 18 - Capital & Liquidity Position Tracking
+[0;34m[INFO][0m Executing: 019: Primitive 19 - Kernel Wiring
+psql:core/019_kernel_wiring.sql:31: NOTICE:  Applying RLS policies to all core tables...
+psql:core/019_kernel_wiring.sql:31: ERROR:  column reference "table_name" is ambiguous
+LINE 4:               AND table_name = tbl.tablename
+                          ^
+DETAIL:  It could refer to either a PL/pgSQL variable or a table column.
+QUERY:  SELECT EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_schema = p_schema
+              AND table_name = tbl.tablename
+              AND column_name = 'tenant_id'
+        )
+CONTEXT:  PL/pgSQL function core.generate_rls_policies(text,text) line 19 at SQL statement
+PL/pgSQL function inline_code_block line 7 at FOR over SELECT rows
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping tenants: trigger "trg_prevent_delete_tenants" for relation "tenants" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping entities: relation "core.entities" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping value_containers: relation "core.value_containers" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping value_movements: relation "core.value_movements" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping economic_agents: relation "core.economic_agents" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping temporal_transitions: relation "core.temporal_transitions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping chart_of_accounts: trigger "trg_prevent_delete_chart_of_accounts" for relation "chart_of_accounts" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping exchange_rates: trigger "trg_prevent_delete_exchange_rates" for relation "exchange_rates" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping instruments: relation "core.instruments" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping currency_pairs: trigger "trg_prevent_delete_currency_pairs" for relation "currency_pairs" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping account_numbers: relation "core.account_numbers" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping settlement_instructions: relation "core.settlement_instructions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping settlement_batches: relation "core.settlement_batches" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping settlement_queue: relation "core.settlement_queue" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping reconciliation_runs: relation "core.reconciliation_runs" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping reconciliation_items: relation "core.reconciliation_items" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping suspense_items: relation "core.suspense_items" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping control_batches: relation "core.control_batches" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping control_entries: relation "core.control_entries" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping eod_runs: relation "core.eod_runs" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping entitlements: relation "core.entitlements" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping authorizations: relation "core.authorizations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping roles: trigger "trg_prevent_delete_roles" for relation "roles" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping agent_roles: relation "core.agent_roles" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping access_control_lists: trigger "trg_prevent_delete_access_control_lists" for relation "access_control_lists" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping jurisdictions: trigger "trg_prevent_delete_jurisdictions" for relation "jurisdictions" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping addresses: relation "core.addresses" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping holiday_calendars: trigger "trg_prevent_delete_holiday_calendars" for relation "holiday_calendars" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping holidays: trigger "trg_prevent_delete_holidays" for relation "holidays" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping geographic_risk_assessments: trigger "trg_prevent_delete_geographic_risk_assessments" for relation "geographic_risk_assessments" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping provisions: relation "core.provisions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping reserve_utilizations: relation "core.reserve_utilizations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping lgd_models: trigger "trg_prevent_delete_lgd_models" for relation "lgd_models" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping pd_models: trigger "trg_prevent_delete_pd_models" for relation "pd_models" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping ead_calculations: relation "core.ead_calculations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping documents: relation "core.documents" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping document_versions: relation "core.document_versions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping document_verifications: relation "core.document_verifications" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping digital_signatures: relation "core.digital_signatures" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping master_accounts: relation "core.master_accounts" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping sub_accounts: relation "core.sub_accounts" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping sub_ledger_reconciliations: relation "core.sub_ledger_reconciliations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping client_money_calculations: relation "core.client_money_calculations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping legal_entities: relation "core.legal_entities" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping ownership_hierarchies: relation "core.ownership_hierarchies" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping consolidation_rules: relation "core.consolidation_rules" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping consolidated_positions: relation "core.consolidated_positions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping intercompany_eliminations: relation "core.intercompany_eliminations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping exposure_positions: relation "core.exposure_positions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping risk_weighted_assets: relation "core.risk_weighted_assets" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping capital_positions: relation "core.capital_positions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping lcr_calculations: relation "core.lcr_calculations" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping stable_funding_positions: relation "core.stable_funding_positions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping stress_scenarios: trigger "trg_prevent_delete_stress_scenarios" for relation "stress_scenarios" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping leverage_exposures: relation "core.leverage_exposures" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping liquidity_positions: relation "core.liquidity_positions" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping regulatory_snapshots: relation "core.regulatory_snapshots" does not exist
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping pii_registry: trigger "trg_prevent_delete_pii_registry" for relation "pii_registry" already exists
+psql:core/019_kernel_wiring.sql:74: NOTICE:  Skipping regulatory_snapshot_log: trigger "trg_prevent_delete_regulatory_snapshot_log" for relation "regulatory_snapshot_log" already exists
+psql:core/019_kernel_wiring.sql:84: NOTICE:  Truncate protection trigger may already exist: event trigger "prevent_truncate_trigger" already exists
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for tenants: trigger "trg_audit_tenants" for relation "tenants" already exists
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for entities: relation "core.entities" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for value_containers: relation "core.value_containers" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for value_movements: relation "core.value_movements" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for economic_agents: relation "core.economic_agents" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for chart_of_accounts: trigger "trg_audit_chart_of_accounts" for relation "chart_of_accounts" already exists
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for exchange_rates: trigger "trg_audit_exchange_rates" for relation "exchange_rates" already exists
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for instruments: relation "core.instruments" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for settlement_instructions: relation "core.settlement_instructions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for control_batches: relation "core.control_batches" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for entitlements: relation "core.entitlements" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for provisions: relation "core.provisions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for documents: relation "core.documents" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for sub_accounts: relation "core.sub_accounts" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for legal_entities: relation "core.legal_entities" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for capital_positions: relation "core.capital_positions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for liquidity_positions: relation "core.liquidity_positions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for stable_funding_positions: relation "core.stable_funding_positions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for exposure_positions: relation "core.exposure_positions" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for risk_weighted_assets: relation "core.risk_weighted_assets" does not exist
+psql:core/019_kernel_wiring.sql:172: NOTICE:  Skipping audit trigger for stress_scenarios: trigger "trg_audit_stress_scenarios" for relation "stress_scenarios" already exists
+psql:core/019_kernel_wiring.sql:211: NOTICE:  Skipping temporal index for tenants: column "is_current" does not exist
+psql:core/019_kernel_wiring.sql:211: NOTICE:  Skipping temporal index for chart_of_accounts: column "is_current" does not exist
+psql:core/019_kernel_wiring.sql:211: NOTICE:  Skipping temporal index for exchange_rates: column "is_current" does not exist
+psql:core/019_kernel_wiring.sql:232: NOTICE:  relation "idx_currencies_metadata_gin" already exists, skipping
+psql:core/019_kernel_wiring.sql:232: NOTICE:  GIN metadata index created for core.currencies
+psql:core/019_kernel_wiring.sql:232: NOTICE:  relation "idx_country_codes_metadata_gin" already exists, skipping
+psql:core/019_kernel_wiring.sql:232: NOTICE:  GIN metadata index created for core.country_codes
+psql:core/019_kernel_wiring.sql:232: NOTICE:  relation "idx_reference_data_metadata_gin" already exists, skipping
+psql:core/019_kernel_wiring.sql:232: NOTICE:  GIN metadata index created for core.reference_data
+psql:core/019_kernel_wiring.sql:301: NOTICE:  PII fields registered
+psql:core/019_kernel_wiring.sql:364: WARNING:  "wal_level" is insufficient to publish logical changes
+HINT:  Set "wal_level" to "logical" before creating subscriptions.
+psql:core/019_kernel_wiring.sql:364: NOTICE:  Replication: Replication publication finos_core_kernel created with all core tables
+psql:core/019_kernel_wiring.sql:364: NOTICE:  publication "finos_event_stream" does not exist, skipping
+psql:core/019_kernel_wiring.sql:364: NOTICE:  Event stream: Error: relation "core_crypto.immutable_events" does not exist
+psql:core/019_kernel_wiring.sql:407: NOTICE:  GL snapshot creation error: relation "core.movement_legs" does not exist
+psql:core/019_kernel_wiring.sql:449: NOTICE:  Capital/Liquidity MV creation error: relation "core.capital_positions" does not exist
+psql:core/019_kernel_wiring.sql:452: ERROR:  relation "core_reporting.gl_snapshot" does not exist
+psql:core/019_kernel_wiring.sql:453: ERROR:  relation "core_reporting.mv_capital_liquidity_latest" does not exist
+psql:core/019_kernel_wiring.sql:481: NOTICE:  ========================================
+psql:core/019_kernel_wiring.sql:481: NOTICE:  FINOS CORE KERNEL - HEALTH CHECK RESULTS
+psql:core/019_kernel_wiring.sql:481: NOTICE:  ========================================
+psql:core/019_kernel_wiring.sql:481: NOTICE:  Timestamp: 2026-03-22T20:26:36.569755+02:00
+psql:core/019_kernel_wiring.sql:481: NOTICE:  Environment: development
+psql:core/019_kernel_wiring.sql:481: NOTICE:  Status: WARNING
+psql:core/019_kernel_wiring.sql:481: NOTICE:  Tables: {"rls_enabled": 0, "rls_coverage_pct": 0, "total_core_tables": 32}
+psql:core/019_kernel_wiring.sql:481: NOTICE:  Indexes: {"total_indexes": 170}
+psql:core/019_kernel_wiring.sql:481: NOTICE:  TimescaleDB: {"hypertable_count": 11, "compression_enabled": false, "extension_installed": true}
+psql:core/019_kernel_wiring.sql:481: NOTICE:  ========================================
+psql:core/019_kernel_wiring.sql:481: WARNING:  Kernel wiring completed with warnings. Review health check output.
+psql:core/019_kernel_wiring.sql:502: NOTICE:  Scheduled job setup error: relation "core.scheduled_jobs" does not exist
+psql:core/019_kernel_wiring.sql:518: NOTICE:  Webhook trigger setup: relation "core_crypto.immutable_events" does not exist
+psql:core/019_kernel_wiring.sql:551: NOTICE:  Creating partitions for system tenant...
+psql:core/019_kernel_wiring.sql:629: NOTICE:  Datom integration: relation "core_crypto.immutable_events" does not exist
+psql:core/019_kernel_wiring.sql:648: NOTICE:  Anchoring service setup: relation "core.scheduled_jobs" does not exist
+psql:core/019_kernel_wiring.sql:690: NOTICE:  Citus not available - running in single-node mode
+psql:core/019_kernel_wiring.sql:709: NOTICE:  ZK setup: relation "core.scheduled_jobs" does not exist
+psql:core/019_kernel_wiring.sql:742: NOTICE:  Sovereign chain setup: relation "core.sovereign_chain_configs" does not exist
+psql:core/019_kernel_wiring.sql:787: NOTICE:  Peer caching setup: relation "core.peer_registry" does not exist
+psql:core/019_kernel_wiring.sql:836: NOTICE:  Compression/archival setup: function core.setup_timescale_compression(unknown, interval, text[], text[]) does not exist
+psql:core/019_kernel_wiring.sql:848: ERROR:  syntax error at or near "DECLARE"
+LINE 6:     DECLARE
+            ^
+psql:core/019_kernel_wiring.sql:857: ERROR:  syntax error at or near "SELECT"
+LINE 3:         SELECT tx_id INTO v_tx_id
+                ^
+psql:core/019_kernel_wiring.sql:861: ERROR:  syntax error at or near "IF"
+LINE 1: IF v_tx_id IS NOT NULL THEN
+        ^
+psql:core/019_kernel_wiring.sql:866: ERROR:  relation "core.transactions" does not exist
+LINE 1: UPDATE core.transactions
+               ^
+psql:core/019_kernel_wiring.sql:867: ERROR:  syntax error at or near "IF"
+LINE 1: END IF;
+            ^
+psql:core/019_kernel_wiring.sql:869: ERROR:  syntax error at or near "RETURN"
+LINE 1: RETURN NEW;
+        ^
+psql:core/019_kernel_wiring.sql:870: WARNING:  there is no transaction in progress
+psql:core/019_kernel_wiring.sql:881: ERROR:  syntax error at or near "$$ LANGUAGE plpgsql;
+    
+    -- Create trigger (disabled by default - enable when transaction management is active)
+    -- CREATE TRIGGER trg_auto_link_event_transaction
+    --     AFTER INSERT ON core_crypto.immutable_events
+    --     FOR EACH ROW EXECUTE FUNCTION core.auto_link_event_to_transaction();
+    
+    RAISE NOTICE 'Transaction entity integration configured';
+EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'Transaction integration setup: %', SQLERRM;
+END $$"
+LINE 1: $$ LANGUAGE plpgsql;
+        ^
+psql:core/019_kernel_wiring.sql:938: ERROR:  relation "core_crypto.immutable_events" does not exist
+LINE 1: SELECT COUNT(*)                    FROM core_crypto.immutabl...
+                                                ^
+QUERY:  SELECT COUNT(*)                    FROM core_crypto.immutable_events WHERE datom_entity_id IS NOT NULL
+CONTEXT:  PL/pgSQL function inline_code_block line 11 at SQL statement
+                             status                              
+-----------------------------------------------------------------
+ FinOS Core Kernel V2.0 - Government-Trusted Financial OS Ready.
+(1 row)
+
+[0;32m[SUCCESS][0m Completed: 019: Primitive 19 - Kernel Wiring
+[0;34m[INFO][0m Executing: 020: Blockchain Anchoring & Merkle Trees
+[0;32m[SUCCESS][0m Completed: 020: Blockchain Anchoring & Merkle Trees
+[0;34m[INFO][0m Executing: 021: Datalog Query Engine
+psql:core/021_datalog_query_engine.sql:185: ERROR:  syntax error at or near "DISTINCT"
+LINE 25:     DISTINCT ON (ie.datom_entity_id);
+             ^
+psql:core/021_datalog_query_engine.sql:187: ERROR:  could not find a function named "core.find_entities_by_value"
+psql:core/021_datalog_query_engine.sql:432: ERROR:  could not find a function named "core.find_entities_by_value"
+[0;32m[SUCCESS][0m Completed: 021: Datalog Query Engine
+[0;34m[INFO][0m Executing: 022: Peer-Style Read Caching
+psql:core/022_peer_caching.sql:125: ERROR:  functions in index predicate must be marked IMMUTABLE
+psql:core/022_peer_caching.sql:190: WARNING:  column type "character varying" used for "attribute_name" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/022_peer_caching.sql:190: WARNING:  column type "character varying" used for "invalidation_type" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/022_peer_caching.sql:190: WARNING:  column type "character varying" used for "segment_hash" does not follow best practices
+HINT:  Use datatype TEXT instead.
+psql:core/022_peer_caching.sql:190: ERROR:  table "cache_invalidation_stream" is already partitioned
+DETAIL:  It is not possible to turn partitioned tables into hypertables.
+[0;32m[SUCCESS][0m Completed: 022: Peer-Style Read Caching
+[0;34m[INFO][0m Executing: 023: Columnar Compression & Auto-Archiving
+[0;32m[SUCCESS][0m Completed: 023: Columnar Compression & Auto-Archiving
+[0;34m[INFO][0m Executing: 024: Transaction Entity (First-Class Citizen)
+psql:core/024_transaction_entity.sql:97: ERROR:  unique constraint on partitioned table must include all partitioning columns
+DETAIL:  PRIMARY KEY constraint on table "transactions" lacks column "valid_time" which is part of the partition key.
+psql:core/024_transaction_entity.sql:100: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:103: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:104: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:105: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:106: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:107: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:108: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:109: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:110: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:112: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:113: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:114: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:115: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:143: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:145: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:146: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:147: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:148: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:150: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:176: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:178: ERROR:  relation "core.transaction_movements" does not exist
+psql:core/024_transaction_entity.sql:179: ERROR:  relation "core.transaction_movements" does not exist
+psql:core/024_transaction_entity.sql:180: ERROR:  relation "core.transaction_movements" does not exist
+psql:core/024_transaction_entity.sql:182: ERROR:  relation "core.transaction_movements" does not exist
+psql:core/024_transaction_entity.sql:210: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:213: ERROR:  relation "core.transaction_audit_log" does not exist
+psql:core/024_transaction_entity.sql:218: ERROR:  relation "core.transaction_audit_log" does not exist
+LINE 1: SELECT create_hypertable('core.transaction_audit_log', 'even...
+                                 ^
+psql:core/024_transaction_entity.sql:220: ERROR:  relation "core.transaction_audit_log" does not exist
+psql:core/024_transaction_entity.sql:221: ERROR:  relation "core.transaction_audit_log" does not exist
+psql:core/024_transaction_entity.sql:223: ERROR:  relation "core.transaction_audit_log" does not exist
+psql:core/024_transaction_entity.sql:240: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:242: ERROR:  relation "core.transaction_status_history" does not exist
+psql:core/024_transaction_entity.sql:244: ERROR:  relation "core.transaction_status_history" does not exist
+psql:core/024_transaction_entity.sql:751: ERROR:  relation "core.transactions" does not exist
+LINE 14: FROM core.transactions
+              ^
+psql:core/024_transaction_entity.sql:753: ERROR:  relation "core.transaction_statistics" does not exist
+psql:core/024_transaction_entity.sql:828: ERROR:  relation "core.transactions" does not exist
+psql:core/024_transaction_entity.sql:829: ERROR:  relation "core.transaction_events" does not exist
+psql:core/024_transaction_entity.sql:830: ERROR:  relation "core.transaction_movements" does not exist
+psql:core/024_transaction_entity.sql:831: ERROR:  relation "core.transaction_audit_log" does not exist
+psql:core/024_transaction_entity.sql:832: ERROR:  relation "core.transaction_status_history" does not exist
+[0;32m[SUCCESS][0m Completed: 024: Transaction Entity (First-Class Citizen)
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m Verifying Deployment
+[0;34m[INFO][0m ==========================================
+[0;34m[INFO][0m Total tables deployed: 60
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 health_check_full                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ {"status": "WARNING", "tables": {"rls_enabled": 0, "rls_coverage_pct": 0, "total_core_tables": 44}, "indexes": {"total_indexes": 224}, "timestamp": "2026-03-22T20:26:37.293087+02:00", "environment": "development", "timescaledb": {"hypertable_count": 11, "compression_enabled": false, "extension_installed": true}, "partition_health": [{"status": "OK", "size_bytes": 8192, "table_name": "core.archival_policies", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.chart_of_accounts", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.tenants", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.movement_types", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.jurisdictions", "dead_tuples": 8, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.pii_registry", "dead_tuples": 10, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 8192, "table_name": "core.country_codes", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.currencies", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.batch_validation_rules", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.container_balances", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.sub_ledger_balances", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.batch_processing_log", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.webhook_subscriptions", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.reconciliation_rules", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.peer_registry", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.merkle_batches", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.sovereign_chain_configs", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.webhook_deliveries", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_audit.error_log", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.exchange_rates", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.reference_data", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.account_mappings", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.eod_stages", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.account_balances", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.movement_postings", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_crypto.event_stream_positions", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.retention_policies", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.settlement_finality_log", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.reconciliation_activity", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.agent_relationship_changes", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.temporal_snapshots", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.rate_limit_counters", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.trial_balances", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.archival_jobs", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.trial_balance_details", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.cold_storage_index", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.provision_history", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.roles", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.holidays", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.pd_models", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.lgd_models", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_audit.algorithm_executions", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_audit.audit_log", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.access_control_lists", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.rate_limit_policies", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_history.price_history", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.holiday_calendars", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_audit.system_metrics", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.blockchain_anchors", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.cache_segments", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.cache_entries", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.currency_pairs", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.cache_invalidation_stream_default", "dead_tuples": 0, "partition_name": "cache_invalidation_stream", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.regulatory_snapshot_log", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core_crypto.event_verifications", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.stress_scenarios", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.peer_cache_index", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.geographic_risk_assessments", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.external_storage_configs", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}, {"status": "OK", "size_bytes": 0, "table_name": "core.cache_invalidation_stream", "dead_tuples": 0, "partition_name": "N/A", "recommendation": "No action needed"}]}
+(1 row)
+
+[0;32m[SUCCESS][0m ==========================================
+[0;32m[SUCCESS][0m Deployment Complete!
+[0;32m[SUCCESS][0m ==========================================
