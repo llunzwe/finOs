@@ -70,11 +70,6 @@ CREATE TABLE dynamic.ecl_model_configuration (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_by VARCHAR(100),
-    version BIGINT NOT NULL DEFAULT 1,
-    updated_by VARCHAR(100),
-    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_ecl_model_code UNIQUE (tenant_id, model_code)
 

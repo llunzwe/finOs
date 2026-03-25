@@ -75,11 +75,6 @@ CREATE TABLE dynamic.regulatory_report_catalog (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by VARCHAR(100),
     version BIGINT NOT NULL DEFAULT 1,
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    updated_by VARCHAR(100),
-    version BIGINT NOT NULL DEFAULT 1,
-    updated_by VARCHAR(100),
-    version BIGINT NOT NULL DEFAULT 1,
     
     CONSTRAINT unique_report_code UNIQUE (tenant_id, report_code, schema_version)
 

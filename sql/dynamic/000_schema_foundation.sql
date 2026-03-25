@@ -259,6 +259,69 @@ GRANT USAGE ON SCHEMA dynamic_history TO finos_app;
 GRANT EXECUTE ON FUNCTION dynamic.generate_entity_code TO finos_app;
 
 -- ============================================================================
+-- ADDITIONAL ENUMERATIONS (AUDIT REMEDIATION)
+-- ============================================================================
+
+-- Settlement Methods (CSDR / ISO 20022)
+CREATE TYPE dynamic.settlement_method AS ENUM (
+    'RTGS', 'DNS', 'BILATERAL', 'DFSNOSTRO', 'CASH', 'DELIVERY', 'INTERNAL'
+);
+COMMENT ON TYPE dynamic.settlement_method IS 'Settlement methods per CSDR and ISO 20022 pacs.008/009';
+
+-- DvP Models (Delivery vs Payment)
+CREATE TYPE dynamic.dvp_model AS ENUM (
+    'DvP', 'PvP', 'FoP'
+);
+COMMENT ON TYPE dynamic.dvp_model IS 'Delivery vs Payment models (DvP/Delivery, PvP/Payment, FoP/Free of Payment)';
+
+-- Finality Status
+CREATE TYPE dynamic.finality_status AS ENUM (
+    'PENDING', 'PROVISIONAL', 'MATCHED', 'FINAL', 'FAILED', 'REVERSED', 'CANCELLED'
+);
+COMMENT ON TYPE dynamic.finality_status IS 'Settlement finality states per CSDR Article 5';
+
+-- Blockchain Anchor Chains
+CREATE TYPE dynamic.anchor_chain AS ENUM (
+    'bitcoin', 'ethereum', 'hyperledger', 'polygon', 
+    'sarb_sovereign', 'rbz_sovereign', 'cbuae_sovereign',
+    'brics_chain', 'african_union_chain'
+);
+COMMENT ON TYPE dynamic.anchor_chain IS 'Supported blockchain networks for government trust anchoring';
+
+-- ZK Proof Types
+CREATE TYPE dynamic.zk_proof_type AS ENUM (
+    'range_proof', 'membership_proof', 'equality_proof', 
+    'set_membership', 'merkle_membership', 'recursive_snark'
+);
+COMMENT ON TYPE dynamic.zk_proof_type IS 'Zero-knowledge proof types for privacy-preserving verification';
+
+-- Datom Attribute Types
+CREATE TYPE dynamic.datom_value_type AS ENUM (
+    'STRING', 'INTEGER', 'DECIMAL', 'BOOLEAN', 'TIMESTAMP', 'JSON', 'UUID', 'REFERENCE'
+);
+COMMENT ON TYPE dynamic.datom_value_type IS 'E-A-V-Tx datom value types for immutable event store';
+
+-- Conservation Override Reasons
+CREATE TYPE dynamic.conservation_override_reason AS ENUM (
+    'SYSTEM_CORRECTION', 'REGULATORY_MANDATE', 'FRAUD_INVESTIGATION', 
+    'ACCOUNTING_ADJUSTMENT', 'EMERGENCY_RECOVERY'
+);
+COMMENT ON TYPE dynamic.conservation_override_reason IS 'Emergency bypass reasons for double-entry conservation violations';
+
+-- Consolidation Methods
+CREATE TYPE dynamic.consolidation_method AS ENUM (
+    'FULL', 'PROPORTIONAL', 'EQUITY', 'JOINT_VENTURE', 'NONE'
+);
+COMMENT ON TYPE dynamic.consolidation_method IS 'Group consolidation methods per IFRS 10/11';
+
+-- Merkle Batch Status
+CREATE TYPE dynamic.merkle_batch_status AS ENUM (
+    'OPEN', 'CLOSED', 'ROOT_COMPUTED', 'ANCHOR_PENDING', 
+    'ANCHOR_BROADCAST', 'ANCHOR_CONFIRMED', 'ANCHOR_FAILED'
+);
+COMMENT ON TYPE dynamic.merkle_batch_status IS 'Merkle tree batch lifecycle for blockchain anchoring';
+
+-- ============================================================================
 -- COMPLIANCE NOTES
 -- ============================================================================
 -- This schema foundation provides:
@@ -268,4 +331,7 @@ GRANT EXECUTE ON FUNCTION dynamic.generate_entity_code TO finos_app;
 --   - GDPR/SOX audit-ready structures
 --   - AAOIFI Islamic finance support
 --   - PCI DSS card data handling
+--   - CSDR settlement finality compliance
+--   - Datomic E-A-V-Tx model support
+--   - ZK proof privacy-preserving verification
 -- ============================================================================
